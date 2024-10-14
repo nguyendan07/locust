@@ -1,28 +1,28 @@
 .. _increaserr:
 
 ===========================
-Increasing the request rate
+Tăng tốc độ yêu cầu (Increasing the request rate)
 ===========================
 
-Increase the number of requests per second using a combination of the following steps:
+Tăng số lượng yêu cầu mỗi giây bằng cách kết hợp các bước sau:
 
-#. Increase the number of users. To fully utilize your target system you may need a lot of simultaneous users, especially if each request takes a long time to complete.
+#. Tăng số lượng người dùng. Để tận dụng hệ thống mục tiêu của bạn, bạn có thể cần nhiều người dùng đồng thời, đặc biệt nếu mỗi yêu cầu mất thời gian lâu để hoàn thành.
 
-#. If response times are unexpectedly high and/or increasing as the number of users go up, then you have probably saturated the system you are testing and need to dig into why. This is not really a Locust problem, but here are some things you may want to check:
+#. Nếu thời gian phản hồi cao và/hoặc tăng khi số lượng người dùng tăng, thì bạn có thể đã bão hòa hệ thống bạn đang kiểm tra và cần phải tìm hiểu lý do tại sao. Điều này không phải là vấn đề của Locust, nhưng đây là một số điều bạn có thể muốn kiểm tra:
 
-    -  resource utilization (e.g. CPU, memory & network. Check these metrics on the locust side as well)
-    -  configuration (e.g. max threads for your web server)
-    -  back end response times (e.g. DB)
-    -  client side DNS performance/flood protection (Locust will normally make at least one DNS Request per User)
+    -  sử dụng tài nguyên (ví dụ: CPU, bộ nhớ & mạng. Kiểm tra các chỉ số này ở phía Locust)
+    -  cấu hình (ví dụ: số luồng tối đa cho máy chủ web của bạn)
+    -  thời gian phản hồi phía sau (ví dụ: DB)
+    -  hiệu suất DNS phía máy khách/bảo vệ tràn (Locust thường sẽ thực hiện ít nhất một yêu cầu DNS cho mỗi người dùng)
 
-#. If Locust prints a warning about high CPU usage (``WARNING/root: CPU usage above 90%! ...``) try the following:
+#. Nếu Locust in ra cảnh báo về việc sử dụng CPU cao (``WARNING/root: CPU usage above 90%! ...``) hãy thử các bước sau:
 
-    -  Run Locust `distributed <https://docs.locust.io/en/stable/running-locust-distributed.html>`__ to utilize multiple cores & multiple machines
-    -  Try switching to `FastHttpUser <https://docs.locust.io/en/stable/increase-performance.html#increase-performance>`__ to reduce CPU usage
-    -  Check to see that there are no strange/infinite loops in your code
+    -  Chạy Locust `phân tán <https://docs.locust.io/en/stable/running-locust-distributed.html>`__ để tận dụng nhiều lõi & nhiều máy
+    -  Thử chuyển sang `FastHttpUser <https://docs.locust.io/en/stable/increase-performance.html#increase-performance>`__ để giảm việc sử dụng CPU
+    -  Kiểm tra xem có vòng lặp lạ/không giới hạn nào trong mã của bạn không
 
-#. If you are using a custom client (not HttpUser or FastHttpUser), make sure any client library you are using is gevent-friendly otherwise it will block the entire Python process (essentially limiting you to one user per worker)
+#. Nếu bạn đang sử dụng một client tùy chỉnh (không phải HttpUser hoặc FastHttpUser), hãy chắc chắn rằng bất kỳ thư viện client nào bạn đang sử dụng đều thân thiện với gevent, nếu không nó sẽ chặn toàn bộ quá trình Python (về cơ bản giới hạn bạn chỉ có một người dùng cho mỗi worker)
 
 .. note::
 
-    Hatch rate/ramp up does not change peak load, it only changes how fast you get there.
+    Tốc độ hatch/khởi động không thay đổi tải cao nhất, nó chỉ thay đổi cách bạn đến đó.

@@ -1,21 +1,21 @@
 .. _custom-load-shape:
 
 ==================
-Custom load shapes
+Hình dạng tải tùy chỉnh (Custom load shapes)
 ==================
 
-Sometimes a completely custom shaped load test is required that cannot be achieved by simply setting or changing the user count and spawn rate. For example, you might want to generate a load spike or ramp up and down at custom times. By using a `LoadTestShape` class you have full control over the user count and spawn rate at all times.
+Đôi khi cần một hình dạng tải hoàn toàn tùy chỉnh mà không thể đạt được bằng cách đơn giản là thiết lập hoặc thay đổi số lượng người dùng và tốc độ spawn. Ví dụ, bạn có thể muốn tạo ra một tải spike hoặc tăng giảm tại các thời điểm tùy chỉnh. Bằng cách sử dụng một lớp `LoadTestShape` bạn có toàn quyền kiểm soát số lượng người dùng và tốc độ spawn tại tất cả các thời điểm.
 
-Define a class inheriting the LoadTestShape class in your locust file. If this type of class is found then it will be automatically used by Locust.
+Định nghĩa một lớp kế thừa lớp LoadTestShape trong tệp locust của bạn. Nếu loại lớp này được tìm thấy thì nó sẽ tự động được sử dụng bởi Locust.
 
-In this class you define a `tick()` method that returns a tuple with the desired user count and spawn rate (or `None` to stop the test). Locust will call the `tick()` method approximately once per second.
+Trong lớp này, bạn xác định một phương thức `tick()` trả về một bộ giá trị với số lượng người dùng và tốc độ spawn mong muốn (hoặc `None` để dừng bài kiểm tra). Locust sẽ gọi phương thức `tick()` khoảng một lần mỗi giây.
 
-In the class you also have access to the `get_run_time()` method, for checking how long the test has run for.
+Trong lớp bạn cũng có quyền truy cập vào phương thức `get_run_time()`, để kiểm tra bài kiểm tra đã chạy được bao lâu.
 
-Example
+Ví dụ
 -------
 
-This shape class will increase user count in blocks of 100 and then stop the load test after 10 minutes:
+Lớp hình dạng này sẽ tăng số lượng người dùng theo từng khối 100 và sau đó dừng bài kiểm tra sau 10 phút:
 
 .. code-block:: python
 
@@ -27,21 +27,21 @@ This shape class will increase user count in blocks of 100 and then stop the loa
             run_time = self.get_run_time()
 
             if run_time < self.time_limit:
-                # User count rounded to nearest hundred.
+                # Số lượng người dùng làm tròn đến hàng trăm gần nhất.
                 user_count = round(run_time, -2)
                 return (user_count, spawn_rate)
 
             return None
 
-This functionality is further demonstrated in the `examples on github <https://github.com/locustio/locust/tree/master/examples/custom_shape>`_ including:
+Chức năng này được thể hiện rõ hơn trong `ví dụ trên github <https://github.com/locustio/locust/tree/master/examples/custom_shape>`_ bao gồm:
 
-- Generating a double wave shape
-- Time based stages like K6
-- Step load pattern like Visual Studio
+- Tạo hình dạng sóng kép
+- Các giai đoạn dựa trên thời gian như K6
+- Mẫu tải bước như Visual Studio
 
-One further method may be helpful for your custom load shapes: `get_current_user_count()`, which returns the total number of active users. This method can be used to prevent advancing to subsequent steps until the desired number of users has been reached. This is especially useful if the initialization process for each user is slow or erratic in how long it takes. If this sounds like your use case, see the `example on github <https://github.com/locustio/locust/tree/master/examples/custom_shape/wait_user_count.py>`_.
+Một phương pháp khác có thể hữu ích cho các hình dạng tải tùy chỉnh của bạn: `get_current_user_count()`, trả về tổng số người dùng hoạt động. Phương pháp này có thể được sử dụng để ngăn chặn tiến tới các bước tiếp theo cho đến khi số lượng người dùng mong muốn đã đạt được. Điều này đặc biệt hữu ích nếu quá trình khởi tạo cho mỗi người dùng chậm hoặc không ổn định trong việc mất bao lâu. Nếu đây là trường hợp sử dụng của bạn, hãy xem `ví dụ trên github <https://github.com/locustio/locust/tree/master/examples/custom_shape/wait_user_count.py>`_.
 
-Note that if you want to defined your own custom base shape, you need to define the `abstract` attribute to `True` to avoid it being picked as Shape when imported:
+Lưu ý rằng nếu bạn muốn xác định hình dạng cơ bản tùy chỉnh của riêng mình, bạn cần xác định thuộc tính `abstract` thành `True` để tránh nó được chọn làm Shape khi được nhập:
 
 .. code-block:: python
 
@@ -49,14 +49,14 @@ Note that if you want to defined your own custom base shape, you need to define 
         abstract = True
         
         def tick(self):
-            # Something reusable but needing inheritance
+            # Một cái gì đó có thể tái sử dụng nhưng cần kế thừa
             return None
 
 
-Combining Users with different load profiles
+Kết hợp người dùng với các hình dạng tải khác nhau
 --------------------------------------------
 
-If you use the Web UI, you can add the :ref:`---class-picker <class-picker>` parameter to select which shape to use. But it often more flexible to have your User definitions in one file and your LoadTestShape in a separate one. For example, if you a high/low load Shape class defined in low_load.py and high_load.py respectively:
+Nếu bạn sử dụng giao diện Web, bạn có thể thêm tham số :ref:`---class-picker <class-picker>` để chọn hình dạng nào sẽ được sử dụng. Nhưng thường linh hoạt hơn khi bạn định nghĩa các định nghĩa Người dùng của mình trong một tệp và hình dạng LoadTestShape trong một tệp riêng. Ví dụ, nếu bạn có một lớp hình dạng tải cao/thấp được xác định trong low_load.py và high_load.py tương ứng:
 
 .. code-block:: console
 
@@ -64,10 +64,10 @@ If you use the Web UI, you can add the :ref:`---class-picker <class-picker>` par
 
     $ locust -f locustfile.py,high_load.py
 
-Restricting which user types to spawn in each tick
+Hạn chế loại người dùng nào sẽ spawn trong mỗi tick
 --------------------------------------------------
 
-Adding the element ``user_classes`` to the return value gives you more detailed control:
+Thêm phần tử ``user_classes`` vào giá trị trả về sẽ cho bạn kiểm soát chi tiết hơn:
 
 .. code-block:: python
 
@@ -93,17 +93,17 @@ Adding the element ``user_classes`` to the return value gives you more detailed 
 
             return None
 
-This shape would create create in the first 10 seconds 10 User of ``UserA``. In the next twenty seconds 40 of type ``UserA / UserB`` and this continues until the stages end.
+Hình dạng này sẽ tạo ra trong 10 giây đầu tiên 10 người dùng của ``UserA``. Trong 20 giây tiếp theo 40 người dùng của loại ``UserA/UserB`` và điều này tiếp tục cho đến khi các giai đoạn kết thúc.
 
 
 .. _use-common-options:
 
-Reusing common options in custom shapes
+Sử dụng các tùy chọn chung trong các hình dạng tùy chỉnh
 ---------------------------------------
 
-When using shapes, the the *Users*, *Spawn Rate* and *Run Time* options will be hidden from the UI, and if you specify them on command line Locust will log a warning. This is because those options dont directly apply to shapes, and specifying them might be a mistake.
+Khi sử dụng hình dạng, các tùy chọn *Users*, *Spawn Rate* và *Run Time* sẽ bị ẩn khỏi giao diện người dùng, và nếu bạn xác định chúng trên dòng lệnh Locust sẽ ghi lại một cảnh báo. Điều này là vì những tùy chọn đó không áp dụng trực tiếp cho các hình dạng, và việc xác định chúng có thể là một lỗi.
 
-If you really want to combine a shape with these options, set the ``use_common_options`` attribute and access them from ``self.runner.environment.parsed_options``:
+Nếu bạn thực sự muốn kết hợp một hình dạng với các tùy chọn này, hãy đặt thuộc tính ``use_common_options`` và truy cập chúng từ ``self.runner.environment.parsed_options``:
 
 .. code-block:: python
 
@@ -113,7 +113,7 @@ If you really want to combine a shape with these options, set the ``use_common_o
         def tick(self):
             run_time = self.get_run_time()
             if run_time < self.runner.environment.parsed_options.run_time:
-                # User count rounded to nearest hundred, just like in previous example
+                # Số lượng người dùng làm tròn đến hàng trăm gần nhất, giống như trong ví dụ trước
                 user_count = round(run_time, -2)
                 return (user_count, self.runner.environment.parsed_options.spawn_rate)
                 

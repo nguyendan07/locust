@@ -1,46 +1,47 @@
 .. _extensions:
 
 ======================
-Third party extensions
+Phần mở rộng của bên thứ ba (Third party extensions)
 ======================
 
-Support for load testing other protocols, reporting etc
+Hỗ trợ kiểm tra tải cho các giao thức khác, báo cáo, v.v.
 -------------------------------------------------------
 
 -  `locust-plugins <https://github.com/SvenskaSpel/locust-plugins/>`__
 
    -  request logging & graphing
-   -  new protocols like websockets, selenium/webdriver, http users that
+   -  các giao thức mới như websockets, selenium/webdriver, http users
       load html page resources
-   -  readers (ways to get test data into your tests)
-   -  wait time (custom wait time functions)
-   -  debug (support for running a single user in the debugger)
-   -  checks (adds command line parameters to set locust exit code based
-      on requests/s, error percentage and average response times)
+   -  readers (cách để đưa dữ liệu test vào tests của bạn)
+   -  wait time (hàm chờ thời gian tùy chỉnh)
+   -  debug (hỗ trợ chạy một user duy nhất trong trình gỡ lỗi)
+   -  checks (thêm các tham số dòng lệnh để đặt mã thoát locust dựa
+      trên requests/s, tỷ lệ lỗi và thời gian phản hồi trung bình)
 
-Report OTEL traces for requests
------------------------------------------
+Báo cáo traces OTEL cho các requests
+------------------------------------
 
 - `opentelemetry-demo repo <https://github.com/open-telemetry/opentelemetry-demo/tree/main/src/loadgenerator>`__
 
-Automate distributed runs over SSH
-----------------------------------
+Tự động hóa các chạy phân tán qua SSH
+--------------------------------------
 
 -  `locust-swarm <https://github.com/SvenskaSpel/locust-swarm/>`__
 
-Automatically translate a browser recording (HAR-file) to a locustfile
-----------------------------------------------------------------------
+Tự động dịch bản ghi trình duyệt (tệp HAR) sang tệp locustfile
+-----------------------------------------------------------------------------
 
 -  `har2locust <https://github.com/SvenskaSpel/har2locust>`__
 
-Workers written in other languages than Python
+Workers được viết bằng các ngôn ngữ khác ngoài Python
 ----------------------------------------------
 
-A Locust master and a Locust worker communicate by exchanging
-`msgpack <http://msgpack.org/>`__ messages, which is supported by many
-languages. So, you can write your User tasks in any languages you like.
-For convenience, some libraries do the job as a worker runner. They run
-your User tasks, and report to master regularly.
+Một master Locust và một worker Locust giao tiếp bằng cách trao đổi
+`msgpack <http://msgpack.org/>`__ messages, được hỗ trợ bởi nhiều ngôn
+ngữ. Vì vậy, bạn có thể viết các User tasks của mình bằng bất kỳ ngôn
+ngữ nào bạn thích. Để tiện lợi, một số thư viện thực hiện công việc
+như một worker runner. Chúng chạy các User tasks của bạn, và báo cáo
+đến master đều đặn.
 
 -  `Boomer <https://github.com/myzhan/boomer/>`__ - Go
 -  `Locust4j <https://github.com/myzhan/locust4j>`__ - Java

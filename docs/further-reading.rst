@@ -1,23 +1,23 @@
 ===============================
-Further reading / knowledgebase
+Tài liệu tham khảo / Cơ sở kiến thức
 ===============================
 
 - :ref:`extensions`.
 
-- An list of Locust `articles, blog posts, reviews, and walkthroughs <https://github.com/orgs/locustio/discussions/2752>`_.
+- Danh sách các `bài viết, blog, đánh giá và hướng dẫn của Locust <https://github.com/orgs/locustio/discussions/2752>`_.
 
-- :ref:`Common questions and answers about Locust <faq>`.
+- :ref:`Câu hỏi thường gặp và câu trả lời về Locust <faq>`.
 
-You'll also find a lot of answers on `stackoverflow <https://stackoverflow.com/questions/tagged/locust?sort=MostVotes>`_, for example:
+Bạn cũng sẽ tìm thấy nhiều câu trả lời trên `stackoverflow <https://stackoverflow.com/questions/tagged/locust?sort=MostVotes>`_, ví dụ:
 
-- `BadStatusLine Errors <https://stackoverflow.com/questions/31600508/locust-io-load-testing-getting-connection-aborted-badstatusline-errors>`_
+- `Lỗi BadStatusLine <https://stackoverflow.com/questions/31600508/locust-io-load-testing-getting-connection-aborted-badstatusline-errors>`_
 
-- `Passing HTTP Headers <https://stackoverflow.com/questions/52007848/locust-passing-headers>`_
+- `Chuyển tiêu đề HTTP <https://stackoverflow.com/questions/52007848/locust-passing-headers>`_
 
-- `POST file upload <https://stackoverflow.com/questions/36163355/proper-post-file-upload-load-testing-with-locust>`_
+- `Tải lên tệp POST <https://stackoverflow.com/questions/36163355/proper-post-file-upload-load-testing-with-locust>`_
 
-- `How often does Locust perform dns queries? <https://stackoverflow.com/questions/36087637/how-often-does-python-requests-perform-dns-queries>`_
+- `Locust thực hiện truy vấn dns như thế nào? <https://stackoverflow.com/questions/36087637/how-often-does-python-requests-perform-dns-queries>`_
 
-In other words, just google whatever problem or error message you're getting and you are likely to find good answers out there.
+Nói cách khác, chỉ cần tìm kiếm bất kỳ vấn đề hoặc thông báo lỗi nào bạn đang gặp phải và bạn có thể tìm thấy câu trả lời tốt ở đó.
 
-If you think Locust is missing some obvious feature (like stopping after a certain number of iterations/requests, setting goals/thresholds for when to fail a test run, support for additional User types like Kafka, Selenium/WebDriver etc), chances are it is implemented in `locust-plugins <https://github.com/SvenskaSpel/locust-plugins/>`_.
+Nếu bạn nghĩ rằng Locust đang thiếu một số tính năng rõ ràng (như dừng sau một số lần lặp/ yêu cầu nhất định, thiết lập mục tiêu/ngưỡng cho khi thất bại một lần chạy thử nghiệm, hỗ trợ cho các loại Người dùng bổ sung như Kafka, Selenium/WebDriver vv), khả năng cao nó đã được triển khai trong `locust-plugins <https://github.com/SvenskaSpel/locust-plugins/>`_.

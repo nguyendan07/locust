@@ -1,12 +1,12 @@
 .. _extending_locust:
 
 ===========
-Event hooks
+Mở rộng Locust - Event hooks
 ===========
 
-Locust comes with a number of event hooks that can be used to extend Locust in different ways.
+Locust đi kèm với một số event hooks mà có thể được sử dụng để mở rộng Locust theo nhiều cách khác nhau.
 
-For example, here's how to set up an event listener that will trigger after a request is completed::
+Ví dụ, đây là cách thiết lập một trình nghe sự kiện sẽ kích hoạt sau khi một yêu cầu được hoàn thành::
 
     from locust import events
 
@@ -21,14 +21,14 @@ For example, here's how to set up an event listener that will trigger after a re
 
 .. note::
 
-    In the above example the wildcard keyword argument (\**kwargs) will be empty, because we're handling all arguments, but it prevents the code from breaking if new arguments are added in some future version of Locust.
+    Trong ví dụ trên, đối số ``**kwargs`` sẽ trống, vì chúng tôi đang xử lý tất cả các đối số, nhưng nó ngăn mã từ việc bị hỏng nếu các đối số mới được thêm trong một phiên bản tương lai của Locust.
 
-    Also, it is entirely possible to implement a client that does not supply all parameters for this event.
-    For example, non-HTTP protocols might not even have the a concept of `url` or `response` object.
-    Remove any such missing field from your listener function definition or use default arguments.
+    Ngoài ra, hoàn toàn có thể triển khai một khách hàng không cung cấp tất cả các tham số cho sự kiện này.
+    Ví dụ, các giao thức không phải HTTP có thể không có khái niệm về `url` hoặc đối tượng `response`.
+    Loại bỏ bất kỳ trường bị thiếu nào từ định nghĩa hàm trình nghe của bạn hoặc sử dụng đối số mặc định.
 
-When running locust in distributed mode, it may be useful to do some setup on worker nodes before running your tests.
-You can check to ensure you aren't running on the master node by checking the type of the node's :py:attr:`runner <locust.env.Environment.runner>`::
+Khi chạy locust ở chế độ phân tán, có thể hữu ích khi thực hiện một số thiết lập trên các nút worker trước khi chạy các bài kiểm tra của bạn.
+Bạn có thể kiểm tra để đảm bảo rằng bạn không chạy trên nút master bằng cách kiểm tra loại của :py:attr:`runner <locust.env.Environment.runner>`::
 
     from locust import events
     from locust.runners import MasterRunner
@@ -47,19 +47,18 @@ You can check to ensure you aren't running on the master node by checking the ty
         else:
             print("Stopped test from Master node")
 
-You can also use events `to add custom command line arguments <https://github.com/locustio/locust/tree/master/examples/add_command_line_argument.py>`_.
+Bạn cũng có thể sử dụng các sự kiện `để thêm các đối số dòng lệnh tùy chỉnh <https://github.com/locustio/locust/tree/master/examples/add_command_line_argument.py>`_.
 
-To see a full list of available events see :ref:`events`.
+Để xem danh sách đầy đủ các sự kiện có sẵn, hãy xem :ref:`events`.
 
 .. _request_context:
 
-
-Request context
+Context yêu cầu (Request context)
 ===============
 
-The :py:attr:`request event <locust.event.Events.request>` has a context parameter that enable you to pass data `about` the request (things like username, tags etc). It can be set directly in the call to the request method or at the User level, by overriding the User.context() method.
+Sự kiện :py:attr:`request <locust.event.Events.request>` có một tham số context cho phép bạn truyền dữ liệu `về` yêu cầu (như tên người dùng, thẻ v.v.). Nó có thể được đặt trực tiếp trong cuộc gọi đến phương thức yêu cầu hoặc ở cấp độ Người dùng, bằng cách ghi đè phương thức User.context().
 
-Context from request method::
+Ngữ cảnh (context) từ phương thức yêu cầu (request method)::
 
     class MyUser(HttpUser):
         @task
@@ -72,7 +71,7 @@ Context from request method::
             if context:
                 print(context["username"])
 
-Context from User instance::
+Ngữ cảnh (context) từ User instance::
 
     class MyUser(HttpUser):
         def context(self):
@@ -88,21 +87,22 @@ Context from User instance::
             print(context["username"])
 
 
-Context from a value in the response, using :ref:`catch_response <catch-response>`::
+Ngữ cảnh (context) từ giá trị trong phản hồi, sử dụng :ref:`catch_response <catch-response>`::
 
     with self.client.get("/", catch_response=True) as resp:
         resp.request_meta["context"]["requestId"] = resp.json()["requestId"]
 
+
 .. note::
 
-    Request context doesn't change how Locust's regular statistics are calculated. Logging/reporting solutions like `locust.cloud <https://locust.cloud/>`_ use the above mechanic to save the context to a database.
+    Bối cảnh yêu cầu không thay đổi cách thống kê thông thường của Locust được tính toán. Các giải pháp ghi nhật ký/báo cáo như `locust.cloud <https://locust.cloud/>`_ sử dụng cơ chế trên để lưu bối cảnh vào cơ sở dữ liệu.
 
-Adding Web Routes
+Thêm Web Routes
 ==================
 
-Locust uses Flask to serve the web UI and therefore it is easy to add web end-points to the web UI.
-By listening to the :py:attr:`init <locust.event.Events.init>` event, we can retrieve a reference
-to the Flask app instance and use that to set up a new route::
+Locust sử sụng Flask để phục vụ giao diện web và do đó rất dễ thêm các điểm cuối web vào giao diện web.
+Bằng cách lắng nghe sự kiện :py:attr:`init <locust.event.Events.init>`, chúng ta có thể lấy tham chiếu
+đến thể hiện ứng dụng Flask và sử dụng nó để thiết lập một route mới::
 
     from locust import events
 
@@ -112,56 +112,52 @@ to the Flask app instance and use that to set up a new route::
         def my_added_page():
             return "Another page"
 
-You should now be able to start locust and browse to http://127.0.0.1:8089/added_page. Note that it doesn't get automatically added as a new tab - you'll need to enter the URL directly.
+Bây giờ bạn có thể bắt đầu locust và duyệt đến http://127.0.0.1:8089/added_page. Lưu ý rằng nó không được tự động thêm vào dưới dạng một tab mới - bạn sẽ cần nhập URL trực tiếp.
 
-Extending Web UI
+Mở rộng Giao diện Web
 ================
 
-As an alternative to adding simple web routes, you can use `Flask Blueprints
-<https://flask.palletsprojects.com/en/1.1.x/blueprints/>`_ and `templates
-<https://flask.palletsprojects.com/en/1.1.x/tutorial/templates/>`_ to not only add routes but also extend
-the web UI to allow you to show custom data along side the built-in Locust stats. This is more advanced but can
-greatly enhance the utility and customizability of the web UI.
+Thay vì thêm các route web đơn giản, bạn có thể sử dụng `Flask Blueprints
+<https://flask.palletsprojects.com/en/1.1.x/blueprints/>`_ và `templates
+<https://flask.palletsprojects.com/en/1.1.x/tutorial/templates/>`_ để không chỉ thêm các route mà còn mở rộng
+giao diện web để cho phép bạn hiển thị dữ liệu tùy chỉnh cùng với các thống kê Locust tích hợp. Điều này phức tạp hơn nhưng có thể tăng cường đáng kể tính hữu ích và tùy chỉnh của giao diện web.
 
-Working examples of extending the web UI can be found
-in the `examples directory <https://github.com/locustio/locust/tree/master/examples>`_ of the Locust
-source code.
+Các ví dụ về cách mở rộng giao diện web có thể được tìm thấy
+trong `thư mục ví dụ <https://github.com/locustio/locust/tree/master/examples>`_ của mã nguồn Locust.
 
-*  ``extend_modern_web_ui.py``: Display a table with content-length for each call.
+*  ``extend_modern_web_ui.py``: Hiển thị một bảng với content-length cho mỗi cuộc gọi.
 
-* ``web_ui_cache_stats.py``: Display Varnish Hit/Miss stats for each call. This could easily be extended to other CDN or cache proxies and gather other cache statistics such as cache age, control, ...
+* ``web_ui_cache_stats.py``: Hiển thị Varnish Hit/Miss stats cho mỗi cuộc gọi. Điều này có thể dễ dàng mở rộng sang các CDN hoặc proxy cache khác và thu thập các thống kê cache khác như tuổi cache, kiểm soát, ...
 
  .. image:: images/extend_modern_web_ui_cache_stats.png
 
 
-Adding Authentication to the Web UI
+Thêm Xác thực vào Giao diện Web
 ===================================
 
-Locust uses `Flask-Login <https://pypi.org/project/Flask-Login/>`_ to handle authentication. The ``login_manager`` is
-exposed on ``environment.web_ui.app``, allowing the flexibility for you to implement any kind of auth that you would like!
+Locust sử dụng `Flask-Login <https://pypi.org/project/Flask-Login/>`_ để xử lý xác thực. ``login_manager`` được
+tiết lộ trên ``environment.web_ui.app``, cho phép linh hoạt cho bạn triển khai bất kỳ loại xác thực nào bạn muốn!
 
-To use username / password authentication, simply provide a ``username_password_callback`` to the ``environment.web_ui.auth_args``.
-You are responsible for defining the route for the callback and implementing the authentication.
+Để sử dụng xác thực tên người dùng/mật khẩu, đơn giản cung cấp một ``username_password_callback`` cho ``environment.web_ui.auth_args``.
+Bạn chịu trách nhiệm định nghĩa route cho callback và triển khai xác thực.
 
-Authentication providers can additionally be configured to allow authentication from 3rd parties such as GitHub or an SSO.
-Simply provide a list of desired ``auth_providers``. You may specify the ``label`` and ``icon`` for display on the button.
-The ``callback_url`` will be the url that the button directs to. You will be responsible for defining the callback route as
-well as the authentication with the 3rd party.
+Các nhà cung cấp xác thực cũng có thể được cấu hình để cho phép xác thực từ bên thứ ba như GitHub hoặc SSO.
+Đơn giản cung cấp một danh sách các ``auth_providers`` mong muốn. Bạn có thể chỉ định ``label`` và ``icon`` cho hiển thị trên nút.
+``callback_url`` sẽ là url mà nút chuyển hướng đến. Bạn sẽ chịu trách nhiệm định nghĩa route callback cũng như xác thực với bên thứ ba.
 
-Whether you are using username / password authentication, an auth provider, or both, a ``user_loader`` needs to be proivded
-to the ``login_manager``. The ``user_loader`` should return ``None`` to deny authentication or return a User object when
-authentication to the app should be granted.
+Dù bạn đang sử dụng xác thực tên người dùng/mật khẩu, một nhà cung cấp xác thực, hoặc cả hai, một ``user_loader`` cần được cung cấp
+đến ``login_manager``. ``user_loader`` nên trả về ``None`` để từ chối xác thực hoặc trả về một đối tượng User khi
+xác thực với ứng dụng nên được cấp quyền.
 
-A full example can be seen `in the auth example <https://github.com/locustio/locust/tree/master/examples/web_ui_auth.py>`_.
+Một ví dụ đầy đủ có thể được xem `trong ví dụ về xác thực <https://github.com/locustio/locust/tree/master/examples/web_ui_auth.py>`_.
 
 
-Run a background greenlet
+Chạy một greenlet nền (background greenlet)
 =========================
 
-Because a locust file is "just code", there is nothing preventing you from spawning your own greenlet to
-run in parallel with your actual load/Users.
+Bởi vì một tệp locust "chỉ là mã", không có gì ngăn cản bạn khởi chạy greenlet riêng của mình để chạy song song với tải/người dùng thực sự của bạn.
 
-For example, you can monitor the fail ratio of your test and stop the run if it goes above some threshold:
+Ví dụ, bạn có thể theo dõi tỷ lệ thất bại của bài kiểm tra của bạn và dừng chạy nếu nó vượt quá một ngưỡng:
 
 .. code-block:: python
 
@@ -180,37 +176,37 @@ For example, you can monitor the fail ratio of your test and stop the run if it 
 
     @events.init.add_listener
     def on_locust_init(environment, **_kwargs):
-        # dont run this on workers, we only care about the aggregated numbers
+        # không chạy cái này trên worker, chúng ta chỉ quan tâm đến các con số tổng hợp
         if isinstance(environment.runner, MasterRunner) or isinstance(environment.runner, LocalRunner):
             gevent.spawn(checker, environment)
 
 .. _parametrizing-locustfiles:
 
 
-Parametrizing locustfiles
+Tham số hóa tệp locust (Parametrizing locustfiles)
 =========================
 
-There are two main ways to parametrize your locustfile.
+Có hai cách chính để tham số hóa tệp locust của bạn.
 
-Basic environment variables
+Biến môi trường cơ bản
 ---------------------------
 
-Like with any program, you can use environment variables:
+Giống như với bất kỳ chương trình nào khác, bạn có thể sử dụng biến môi trường:
 
-On linux/mac:
+Trên linux/mac:
 
 .. code-block:: bash
 
     MY_FUNKY_VAR=42 locust ...
 
-On windows:
+Trên windows:
 
 .. code-block:: bash
 
     SET MY_FUNKY_VAR=42
     locust ...
 
-... and then access them in your locustfile.
+... và sau đó truy cập chúng trong tệp locust của bạn.
 
 .. code-block:: python
 
@@ -219,24 +215,24 @@ On windows:
 
 .. _custom-arguments:
 
-Custom arguments
+Đối số tùy chỉnh
 ----------------
 
-You can add your own command line arguments to Locust, using the :py:attr:`init_command_line_parser <locust.event.Events.init_command_line_parser>` Event. Custom arguments are also presented and editable in the web UI. If `choices` are specified for the argument, they will be presented as a dropdown in the web UI.
+Bạn có thể thêm các đối số dòng lệnh tùy chỉnh của riêng mình vào Locust, sử dụng :py:attr:`init_command_line_parser <locust.event.Events.init_command_line_parser>` Event. Các đối số tùy chỉnh cũng được hiển thị và có thể chỉnh sửa trong giao diện web. Nếu `choices` được chỉ định cho đối số, chúng sẽ được hiển thị dưới dạng một dropdown trong giao diện web.
 
 .. literalinclude:: ../examples/add_command_line_argument.py
     :language: python
 
-When running Locust :ref:`distributed <running-distributed>`, custom arguments are automatically forwarded to workers when the run is started (but not before then, so you cannot rely on forwarded arguments *before* the test has actually started).
+Khi chạy Locust :ref:`phân tán <running-distributed>`, các đối số tùy chỉnh được tự động chuyển tiếp cho các worker khi chạy được bắt đầu (nhưng không phải trước đó, vì vậy bạn không thể dựa vào các đối số được chuyển tiếp *trước* khi bài kiểm tra thực sự đã bắt đầu).
 
 
-Test data management
+Quản lý dữ liệu kiểm tra (Test data management)
 ====================
 
-There are a number of ways to get test data into your tests (after all, your test is just a Python program and it can do whatever Python can). Locust's events give you fine-grained control over *when* to fetch/release test data. You can find a `detailed example here <https://github.com/locustio/locust/tree/master/examples/test_data_management.py>`_.
+Có một số cách để đưa dữ liệu kiểm tra vào các bài kiểm tra của bạn (sau tất cả, bài kiểm tra của bạn chỉ là một chương trình Python và nó có thể làm bất cứ điều gì Python có thể). Các sự kiện của Locust cho phép bạn kiểm soát chi tiết *khi* để lấy/dừng dữ liệu kiểm tra. Bạn có thể tìm thấy `một ví dụ chi tiết ở đây <https://github.com/locustio/locust/tree/master/examples/test_data_management.py>`_.
 
 
-More examples
+Ví dụ khác
 =============
 
-See `locust-plugins <https://github.com/SvenskaSpel/locust-plugins#listeners>`_
+Xem `locust-plugins <https://github.com/SvenskaSpel/locust-plugins#listeners>`_

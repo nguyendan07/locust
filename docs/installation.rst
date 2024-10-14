@@ -1,21 +1,21 @@
 .. _installation:
 
-Installation
+Cài đặt
 ============
 
 .. note::
 
-    Check `Troubleshooting Installation`_ if you encounter issues.
+    Nếu gặp sự cố, hãy tham khảo mục `Xử lý sự cố cài đặt`_.
 
-0. `Install Python <https://docs.python-guide.org/starting/installation/>`_ (if you dont already have it)
+0. `Cài đặt Python <https://docs.python-guide.org/starting/installation/>`_ (nếu chưa có)
 
-1. Install Locust
+1. Cài đặt Locust
 
 .. code-block:: console
 
     $ pip3 install locust
 
-2. Validate your installation
+2. Kiểm tra cài đặt
 
 .. code-block:: console
     :substitutions:
@@ -24,12 +24,12 @@ Installation
     locust |version| from /usr/local/lib/python3.12/site-packages/locust (Python 3.12.5)
 
 
-Using uvx (alternative)
+Sử dụng uvx (lựa chọn thay thế)
 -----------------------
 
-0. `Install uv <https://github.com/astral-sh/uv?tab=readme-ov-file#installation>`_
+0. `Cài đặt uv <https://github.com/astral-sh/uv?tab=readme-ov-file#installation>`_
 
-1. Install and run locust in an ephemeral environment
+1. Cài đặt và chạy Locust trong môi trường tạm thời
 
 .. code-block:: console
     :substitutions:
@@ -37,35 +37,35 @@ Using uvx (alternative)
     $ uvx locust -V
     locust |version| from /.../uv/.../locust (Python 3.12.5)
 
-Done!
+Xong!
 -----
 
-Now you can :ref:`create and run your first test <quickstart>`
+Bây giờ bạn có thể :ref:`tạo và chạy bài kiểm tra đầu tiên <quickstart>` của mình.
 
 -----------------
 
 
-Pre-release builds
+Bản dựng trước khi phát hành
 ------------------
 
-If you need the latest and greatest version of Locust and cannot wait for the next release, you can install a dev build like this:
+Nếu bạn cần phiên bản mới nhất của Locust và không thể đợi đến bản phát hành tiếp theo, bạn có thể cài đặt bản dựng dev như sau:
 
 .. code-block:: console
 
     $ pip3 install -U --pre locust
 
-Pre-release builds are published every time a branch/PR is merged into master.
+Bản dựng trước khi phát hành được công bố mỗi khi nhánh/PR được hợp nhất vào bản chính.
 
-Install for development
+Cài đặt để phát triển
 -----------------------
 
-If you want to modify Locust, or contribute to the project, see :ref:`developing-locust`.
+Nếu bạn muốn sửa đổi Locust hoặc đóng góp cho dự án, hãy xem :ref:`developing-locust`.
 
-Troubleshooting installation
+Xử lý sự cố cài đặt
 ----------------------------
 
 
-.. contents:: Some solutions for common installation issues
+.. contents:: Một số giải pháp cho các sự cố cài đặt thông thường
     :depth: 1
     :local:
     :backlinks: none
@@ -74,53 +74,37 @@ Troubleshooting installation
 psutil/\_psutil_common.c:9:10: fatal error: Python.h: No such file or directory
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-`Answered in Stackoverflow thread 63440765 <https://stackoverflow.com/questions/63440765/locust-installation-error-using-pip3-error-command-errored-out-with-exit-statu>`_
+`Trả lời trong chuỗi Stackoverflow 63440765 <https://stackoverflow.com/questions/63440765/locust-installation-error-using-pip3-error-command-errored-out-with-exit-statu>`_
 
 ERROR: Failed building wheel for xxx
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-While Locust itself is a pure Python package, it has some dependencies
-(e.g. gevent and geventhttpclient) that are compiled from C code. Pretty
-much all common platforms have binary packages on PyPi, but sometimes
-there is a new release that doesn't, or you are running on some exotic
-platform. You have two options:
+Mặc dù Locust là một gói Python thuần túy, nó có một số phụ thuộc (ví dụ: gevent và geventhttpclient) được biên dịch từ mã C. Hầu hết các nền tảng thông dụng đều có các gói nhị phân trên PyPI, nhưng đôi khi có phiên bản mới không có hoặc bạn đang chạy trên một nền tảng lạ. Bạn có hai lựa chọn:
 
--  (on macos) Install xcode: ``xcode-select --install``
--  Use ``pip install --prefer-binary locust`` to select a pre-compiled
-   version of packages even if there is a more recent version available
-   as source.
--  Try googling the error message for the specific package that failed
-   (not Locust), ensure you have the appropriate build tools installed
-   etc.
+- (trên macOS) Cài đặt xcode: ``xcode-select --install``
+- Sử dụng ``pip install --prefer-binary locust`` để chọn phiên bản được biên dịch sẵn của các gói ngay cả khi có phiên bản mới hơn dưới dạng source.
+- Thử tìm kiếm thông báo lỗi trên Google cho gói cụ thể bị lỗi (không phải Locust), đảm bảo bạn đã cài đặt các công cụ build thích hợp, v.v.
 
 Windows
 ~~~~~~~
 
-`Answered in Stackoverflow thread 61592069 <https://stackoverflow.com/questions/61592069/locust-is-not-installing-on-my-windows-10-for-load-testing>`_
+`Trả lời trong chuỗi Stackoverflow 61592069 <https://stackoverflow.com/questions/61592069/locust-is-not-installing-on-my-windows-10-for-load-testing>`_
 
-Installation works, but the ``locust`` command is not found
+Cài đặt thành công, nhưng lệnh ``locust`` không được tìm thấy
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-When running pip, did you get a warning saying ``The script locust is installed in '...' which is not on PATH``?
+Khi chạy pip, bạn có nhận được cảnh báo cho biết ``The script locust is installed in '...' which is not on PATH`` không?
 
-Add that directory to your PATH environment variable.
+Hãy thêm thư mục đó vào biến môi PATH của bạn.
 
-Increasing Maximum Number of Open Files Limit
+Tăng giới hạn số lượng tệp mở tối đa
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Every User/HTTP connection from Locust opens a new file (technically
-a file descriptor). Many operating systems by default set a low limit
-for the maximum number of files that can be open at the same time.
-Locust will try to adjust this automatically for you, but in a lot of
-cases your operating system will not allow it (in which case you will
-get a warning in the log). Instead you will have to do it manually.
+Mỗi kết nối Người dùng/HTTP từ Locust mở một tệp mới (về mặt kỹ thuật là một trình mô tả tệp). Nhiều hệ điều hành theo mặc định đặt giới hạn thấp cho số lượng tệp tối đa có thể được mở cùng một lúc (điều này thường được gọi là "giới hạn số lượng tệp mở"). Locust sẽ cố gắng điều chỉnh điều này tự động cho bạn, nhưng trong nhiều trường hợp hệ điều hành của bạn sẽ không cho phép điều này (trong trường hợp đó bạn sẽ nhận được cảnh báo trong log). Thay vào đó, bạn sẽ phải làm điều này thủ công.
 
-How to do this depends on your operating system, but you might find
-some useful information here:
-https://www.tecmint.com/increase-set-open-file-limits-in-linux/ and
-practical examples
+Cách thực hiện điều này phụ thuộc vào hệ điều hành của bạn, nhưng bạn có thể tìm thấy một số thông tin hữu ích tại đây:
+https://www.tecmint.com/increase-set-open-file-limits-in-linux/ và ví dụ thực tế
 https://www.ibm.com/support/knowledgecenter/SS8NLW_11.0.2/com.ibm.discovery.es.in.doc/iiysiulimits.html
 
-For systemd-based systems (e.g. Debian/Ubuntu) different limits are
-used for graphical login sessions. See
-https://unix.stackexchange.com/a/443467 for additional settings.
+Đối với các hệ thống dựa trên systemd (ví dụ: Debian/Ubuntu) các giới hạn khác nhau được sử dụng cho các phiên đăng nhập đồ họa. Xem
+https://unix.stackexchange.com/a/443467 để biết các cài đặt bổ sung.

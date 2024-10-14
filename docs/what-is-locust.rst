@@ -1,16 +1,16 @@
 ===============================
-What is Locust?
+##  Locust là gì?
 ===============================
 
-Locust is an open source performance/load testing tool for HTTP and other protocols. Its developer-friendly approach lets you define your tests in regular Python code.
+Locust là một công cụ kiểm tra hiệu suất/tải nguồn mở cho HTTP và các giao thức khác. Cách tiếp cận thân thiện với nhà phát triển cho phép bạn định nghĩa các bài kiểm tra của mình bằng mã Python thông thường.
 
-Locust tests can be run from command line or using its web-based UI. Throughput, response times and errors can be viewed in real time and/or exported for later analysis.
+Các bài kiểm tra Locust có thể được chạy từ dòng lệnh hoặc sử dụng giao diện web của nó. Lưu lượng, thời gian phản hồi và lỗi có thể được xem theo thời gian thực và/hoặc xuất ra để phân tích sau này.
 
-You can import regular Python libraries into your tests, and with Locust's pluggable architecture it is infinitely expandable. Unlike when using most other tools, your test design will never be limited by a GUI or domain-specific language.
+Bạn có thể nhập các thư viện Python thông thường vào các bài kiểm tra của mình, và với kiến ​​trúc có thể cắm vào của Locust, nó có thể được mở rộng vô hạn. Không giống như khi sử dụng hầu hết các công cụ khác, thiết kế bài kiểm tra của bạn sẽ không bao giờ bị giới hạn bởi giao diện người dùng đồ họa hoặc ngôn ngữ cụ thể của miền.
 
-To start using Locust, go to :ref:`installation`
+Để bắt đầu sử dụng Locust, hãy truy cập: :ref:`installation`
 
-Features
+## Tính năng
 ========
 
 .. raw:: html
@@ -19,54 +19,54 @@ Features
         <iframe src="https://www.youtube.com/embed/Ok4x2LIbEEY?start=163&end=1477;" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
     </div><br/>
     
-* **Write test scenarios in plain old Python**
+* **Viết các kịch bản thử nghiệm bằng Python thuần túy**
 
- If you want your users to loop, perform some conditional behavior or do some calculations, you just use the regular programming constructs provided by Python.
- Locust runs every user inside its own greenlet (a lightweight process/coroutine). This enables you to write your tests like normal (blocking) Python code instead of having to use callbacks or some other mechanism.
- Because your scenarios are "just python" you can use your regular IDE, and version control your tests as regular code (as opposed to some other tools that use XML or binary formats)
+  Nếu bạn muốn người dùng của mình lặp lại, thực hiện một số hành vi có điều kiện hoặc thực hiện một số tính toán, bạn chỉ cần sử dụng các cấu trúc lập trình thông thường được cung cấp bởi Python.
+  Locust chạy mỗi người dùng bên trong greenlet riêng của nó (một quy trình/coroutine nhẹ). Điều này cho phép bạn viết các bài kiểm tra của mình như mã Python bình thường (chặn) thay vì phải sử dụng các hàm gọi lại hoặc một số cơ chế khác.
+  Bởi vì các kịch bản của bạn là "chỉ Python" nên bạn có thể sử dụng IDE thông thường của mình và kiểm soát phiên bản các bài kiểm tra của mình như mã thông thường (trái ngược với một số công cụ khác sử dụng các định dạng XML hoặc nhị phân)
 
-* **Distributed and scalable - supports hundreds of thousands of concurrent users**
+* **Phân tán và có thể mở rộng - hỗ trợ hàng trăm nghìn người dùng đồng thời**
 
- Locust makes it easy to run load tests distributed over multiple machines.
- It is event-based (using `gevent <http://www.gevent.org/>`_), which makes it possible for a single process to handle many thousands concurrent users.
- While there may be other tools that are capable of doing more requests per second on a given hardware, the low overhead of each Locust user makes it very suitable for testing highly concurrent workloads.
- 
-* **Web-based UI**
+  Locust giúp bạn dễ dàng chạy các bài kiểm tra tải được phân tán trên nhiều máy.
+  Nó dựa trên sự kiện (sử dụng `gevent <http://www.gevent.org/>`_), điều này cho phép một quy trình duy nhất xử lý hàng nghìn người dùng đồng thời.
+  Mặc dù có thể có các công cụ khác có khả năng thực hiện nhiều yêu cầu hơn mỗi giây trên phần cứng nhất định, nhưng chi phí thấp của mỗi người dùng Locust khiến nó rất phù hợp để kiểm tra khối lượng công việc đồng thời cao.
 
- Locust has a user friendly web interface that shows the progress of your test in real-time. You can even change the load while the test is running. It can also be run without the UI, making it easy to use for CI/CD testing.
+* **Giao diện web**
 
-* **Can test any system**
+  Locust có giao diện web thân thiện với người dùng hiển thị tiến trình của bài kiểm tra của bạn theo thời gian thực. Bạn thậm chí có thể thay đổi tải trong khi bài kiểm tra đang chạy. Nó cũng có thể được chạy mà không cần giao diện người dùng, giúp bạn dễ dàng sử dụng để kiểm tra CI/CD.
 
- Even though Locust primarily works with websites/services, it can be used to test almost any system or protocol. Just :ref:`write a client <testing-other-systems>` 
- for what you want to test, or `explore some created by the community <https://github.com/SvenskaSpel/locust-plugins#users>`_.
+* **Có thể kiểm tra bất kỳ hệ thống nào**
 
-* **Hackable**
+  Mặc dù Locust chủ yếu hoạt động với các trang web/dịch vụ, nhưng nó có thể được sử dụng để kiểm tra hầu hết mọi hệ thống hoặc giao thức. Chỉ cần :ref:`viết một client <testing-other-systems>` 
+  cho những gì bạn muốn kiểm tra, hoặc `khám phá một số được tạo bởi cộng đồng <https://github.com/SvenskaSpel/locust-plugins#users>`_.
 
- Locust is small and very flexible and we intend to keep it that way. If you want to `send reporting data to that database & graphing system you like <https://github.com/SvenskaSpel/locust-plugins/tree/master/locust_plugins/dashboards>`_, wrap calls to a REST API to handle the particulars of your system or run a :ref:`totally custom load pattern <custom-load-shape>`, there is nothing stopping you!
+* **Có thể hack**
 
-Name & background
+  Locust nhỏ và rất linh hoạt và chúng tôi dự định sẽ giữ nguyên như vậy. Nếu bạn muốn `gửi dữ liệu báo cáo đến cơ sở dữ liệu & hệ thống vẽ biểu đồ bạn thích <https://github.com/SvenskaSpel/locust-plugins/tree/master/locust_plugins/dashboards>`_, gói các cuộc gọi đến API REST để xử lý các chi tiết cụ thể của hệ thống của bạn hoặc chạy một :ref:`mô hình tải tùy chỉnh hoàn toàn <custom-load-shape>`, không có gì có thể ngăn bạn!
+
+## Tên & bối cảnh
 =================
 
-Locust was born out of a frustration with existing solutions. No existing load testing tool was well-equipped to generate realistic 
-load against a dynamic website where most pages had different content for different users. Existing tools used clunky interfaces or 
-verbose configuration files to declare the tests. In Locust we took a different approach. Instead of configuration formats or UIs 
-you'd get a python framework that would let you define the behavior of your users using Python code. 
+Locust ra đời từ sự thất vọng với các giải pháp hiện có. Không có công cụ kiểm tra tải nào hiện có được trang bị tốt để tạo ra tải thực tế 
+chống lại một trang web động, nơi hầu hết các trang có nội dung khác nhau cho các người dùng khác nhau. Các công cụ hiện có sử dụng giao diện cồng kềnh hoặc 
+các tệp cấu hình dài dòng để khai báo các bài kiểm tra. Trong Locust, chúng tôi đã áp dụng một cách tiếp cận khác. Thay vì các định dạng cấu hình hoặc giao diện người dùng 
+bạn sẽ nhận được một khung Python cho phép bạn định nghĩa hành vi của người dùng bằng mã Python.
 
-Locust takes its name from the `grasshopper species <https://en.wikipedia.org/wiki/Locust>`_, known for their swarming behavior. 
+Locust lấy tên từ loài `chuồn chuồn <https://en.wikipedia.org/wiki/Locust>`_, nổi tiếng với hành vi bầy đàn.
 
 :ref:`history`
 
-Authors
+## Tác giả
 =======
 
 - Jonatan Heyman (`@heyman <https://github.com/heyman>`_)
 - Lars Holmberg (`@cyberw <https://github.com/cyberw>`_)
 - Andrew Baldwin (`@andrewbaldwin44 <https://github.com/andrewbaldwin44>`_)
 
-Many thanks to our other great `contributors <https://github.com/locustio/locust/graphs/contributors>`_!
+Rất cảm ơn các `người đóng góp <https://github.com/locustio/locust/graphs/contributors>`_ tuyệt vời khác của chúng tôi!
 
 
-License
+## Giấy phép
 =======
 
-Open source licensed under the MIT license (see LICENSE file for details).
+Giấy phép nguồn mở theo giấy phép MIT (xem tệp LICENSE để biết chi tiết).

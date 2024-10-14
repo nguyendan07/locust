@@ -1,56 +1,56 @@
 .. _running-distributed:
 
 ===========================
-Distributed load generation
+Tải trọng phân tán (Distributed load generation)
 ===========================
 
-A single process running Locust can simulate a reasonably high throughput. For a simple test plan and small payloads it can make more than a thousand requests per second, possibly over ten thousand if you use :ref:`FastHttpUser <increase-performance>`.
+Một quy trình chạy Locust có thể mô phỏng một lưu lượng khá cao. Đối với một kế hoạch kiểm thử đơn giản và dữ liệu gói nhỏ, nó có thể tạo hơn một nghìn yêu cầu mỗi giây, có thể hơn mười nghìn nếu bạn sử dụng :ref:`FastHttpUser <increase-performance>`.
 
-But if your test plan is complex or you want to run even more load, you'll need to scale out to multiple processes, maybe even multiple machines. Fortunately, Locust supports distributed runs out of the box.
+Nhưng nếu kế hoạch kiểm thử của bạn phức tạp hoặc bạn muốn chạy thêm nhiều tải, bạn cần mở rộng ra nhiều quy trình, có thể là nhiều máy. May mắn thay, Locust hỗ trợ chạy phân tán ngay từ đầu.
 
-To do this, you start one instance of Locust with the ``--master`` flag and one or more using the ``--worker`` flag. The master instance runs Locust's web interface, and tells the workers when to spawn/stop Users. The worker instances run your Users and send statistics back to the master. The master instance doesn't run any Users itself.
+Để làm điều này, bạn bắt đầu một phiên bản của Locust với cờ ``--master`` và một hoặc nhiều sử dụng cờ ``--worker``. Phiên bản master chạy giao diện web của Locust, và thông báo cho các phiên bản worker khi nào để tạo/đóng người dùng. Các phiên bản worker chạy người dùng của bạn và gửi thống kê trở lại master. Phiên bản master không chạy bất kỳ người dùng nào.
 
-To simplify startup, you can use the ``--processes`` flag. It will launch a master process and the specified number of worker processes. It can also be used in combination with ``--worker``, then it will only launch workers. This feature relies on `fork() <https://linux.die.net/man/3/fork>`_ so it doesn't work on Windows.
-
-.. note::
-    Because Python cannot fully utilize more than one core per process (see `GIL <https://realpython.com/python-gil/>`_), you need to run one worker instance per processor core in order to have access to all your computing power.
+Để đơn giản hóa việc khởi động, bạn có thể sử dụng cờ ``--processes``. Nó sẽ khởi chạy một quy trình master và số lượng quy trình worker được chỉ định. Nó cũng có thể được sử dụng kết hợp với ``--worker``, sau đó nó chỉ sẽ khởi chạy worker. Tính năng này phụ thuộc vào `fork() <https://linux.die.net/man/3/fork>`_ nên nó không hoạt động trên Windows.
 
 .. note::
-    There is almost no limit to how many Users you can run per worker. Locust/gevent can run thousands or even tens of thousands of Users per process just fine, as long as their total request rate (RPS) is not too high.
+    Bởi vì Python không thể tận dụng đầy đủ hơn một lõi cho mỗi quy trình (xem `GIL <https://realpython.com/python-gil/>`_), bạn cần chạy một phiên bản worker cho mỗi lõi bộ xử lý để truy cập vào tất cả năng lực tính toán của bạn.
 
-    If Locust *is* getting close to running out of CPU resources, it will log a warning. If there is no warning but you are still unable to generate the expected load, then the problem must be :ref:`increaserr`.
+.. note::
+    Gần như không giới hạn số lượng người dùng bạn có thể chạy trên mỗi worker. Locust/gevent có thể chạy hàng nghìn hoặc thậm chí hàng chục nghìn người dùng trên mỗi quy trình một cách tốt, miễn là tổng số lượng yêu cầu của họ (RPS) không quá cao.
 
-Single machine
+    Nếu Locust *gần như* cạn kiệt tài nguyên CPU, nó sẽ ghi lại một cảnh báo. Nếu không có cảnh báo nhưng bạn vẫn không thể tạo ra tải trọng dự kiến, thì vấn đề phải là :ref:`increaserr`.
+
+Máy đơn (Single machine)
 ==============
 
-It is really simple to launch a master and 4 worker processes::
+Rất đơn giản để khởi chạy một quy trình master và 4 quy trình worker::
 
     locust --processes 4
 
-You can even auto-detect the number of logical cores in your machine and launch one worker for each of them::
-
-    locust --processes -1
-
-Multiple machines
+Bạn thậm chí có thể tự động phát hiện số lõi logic trong máy của bạn và khởi chạy một worker cho mỗi lõi::
+    
+        locust --processes -1
+    
+Nhiều máy (Multiple machines)
 =================
 
-Start locust in master mode on one machine::
+Bắt đầu locust ở chế độ master trên một máy::
 
     locust -f my_locustfile.py --master
 
-And then on each worker machine:
+Và sau đó trên mỗi máy worker:
 
 .. code-block:: bash
 
     locust -f - --worker --master-host <your master> --processes 4
 
 .. note::
-    The ``-f -`` argument tells Locust to get the locustfile from master instead of from its local filesystem. This feature was introduced in Locust 2.23.0.
+    Đối số ``-f -`` cho biết Locust lấy locustfile từ master thay vì từ hệ thống tệp cục bộ của nó. Tính năng này được giới thiệu trong Locust 2.23.0.
 
-Multiple machines, using locust-swarm
+Nhiều máy, sử dụng locust-swarm (Multiple machines, using locust-swarm)
 =====================================
 
-When you make changes to the locustfile you'll need to restart all Locust processes. `locust-swarm <https://github.com/SvenskaSpel/locust-swarm>`_ automates this for you. It also solves the issue of firewall/network access from workers to master using SSH tunnels (this is often a problem if the master is running on your workstation and workers are running in some datacenter).
+Khi bạn thay đổi locustfile, bạn cần khởi động lại tất cả các quy trình Locust. `locust-swarm <https://github.com/SvenskaSpel/locust-swarm>`_ tự động hóa điều này cho bạn. Nó cũng giải quyết vấn đề truy cập qua tường lửa/mạng từ worker đến master bằng cách sử dụng các đường hầm SSH (điều này thường là một vấn đề nếu master đang chạy trên máy làm việc của bạn và worker đang chạy trong một trung tâm dữ liệu nào đó).
 
 .. code-block:: bash
 
@@ -58,58 +58,53 @@ When you make changes to the locustfile you'll need to restart all Locust proces
 
     swarm -f my_locustfile.py --loadgen-list worker-server1,worker-server2 <any other regular locust parameters>
 
-See `locust-swarm <https://github.com/SvenskaSpel/locust-swarm>`_ for more details.
+Xem `locust-swarm <https://github.com/SvenskaSpel/locust-swarm>`_ để biết thêm chi tiết.
 
-Options for distributed load generation
+Tùy chọn cho tải trọng phân tán (Options for distributed load generation)
 =======================================
 
 ``--master-host <hostname or ip>``
 ----------------------------------
 
-Optionally used together with ``--worker`` to set the hostname/IP of the master node (defaults
-to localhost)
+Tùy chọn được sử dụng tùy chọn với ``--worker`` để đặt tên máy chủ của master (mặc định là localhost)
 
 ``--master-port <port number>``
 -------------------------------
 
-Optionally used together with ``--worker`` to set the port number of the master node (defaults to 5557).
+Tùy chọn được sử dụng tùy chọn với ``--worker`` để đặt số cổng của master (mặc định là 5557).
 
 ``--master-bind-host <ip>``
 ---------------------------
 
-Optionally used together with ``--master``. Determines which network interface the master node
-will bind to. Defaults to * (all available interfaces).
+Tùy chọn được sử dụng tùy chọn với ``--master``. Xác định giao diện mạng mà master sẽ kết nối. Mặc định là * (tất cả các giao diện có sẵn).
 
 ``--master-bind-port <port number>``
 ------------------------------------
 
-Optionally used together with ``--master``. Determines what network ports that the master node will
-listen to. Defaults to 5557.
+Tùy chọn được sử dụng tùy chọn với ``--master``. Xác định cổng mạng mà master sẽ lắng nghe. Mặc định là 5557.
 
 ``--expect-workers <number of workers>``
 ----------------------------------------
 
-Used when starting the master node with ``--headless``. The master node will then wait until X worker
-nodes has connected before the test is started.
+Sử dụng khi bắt đầu master với ``--headless``. Master sẽ chờ cho đến khi X worker kết nối trước khi bắt đầu kiểm thử.
 
-Communicating across nodes
+Giao tiếp giữa các nút (Communicating across nodes)
 =============================================
 
-When running Locust in distributed mode, you may want to communicate between master and worker nodes in 
-order to coordinate the test. This can be easily accomplished with custom messages using the built in messaging hooks:
+Khi chạy Locust ở chế độ phân tán, bạn có thể muốn giao tiếp giữa các nút master và worker để phối hợp kiểm thử. Điều này có thể dễ dàng thực hiện với các thông điệp tùy chỉnh sử dụng các kết nối thông điệp được tích hợp:
 
 .. code-block:: python
 
     from locust import events
     from locust.runners import MasterRunner, WorkerRunner
 
-    # Fired when the worker receives a message of type 'test_users'
+    # Được kích hoạt khi worker nhận được tin nhắn có kiểu (message of type) 'test_users'
     def setup_test_users(environment, msg, **kwargs):
         for user in msg.data:
             print(f"User {user['name']} received")
         environment.runner.send_message('acknowledge_users', f"Thanks for the {len(msg.data)} users!")
 
-    # Fired when the master receives a message of type 'acknowledge_users'
+    # Được kích hoạt khi master nhận được tin nhắn có kiểu (message of type) 'acknowledge_users'
     def on_acknowledge(msg, **kwargs):
         print(msg.data)
 
@@ -130,38 +125,34 @@ order to coordinate the test. This can be easily accomplished with custom messag
             ]
             environment.runner.send_message('test_users', users)  
 
-Note that when running locally (i.e. non-distributed), this functionality will be preserved; 
-the messages will simply be handled by the runner that sends them.
+Lưu ý rằng khi chạy cục bộ (tức là không phân tán), chức năng này sẽ được bảo lưu;
+các tin nhắn sẽ đơn giản được xử lý bởi runner gửi chúng.
 
 .. note::
-    Using the default options while registering a message handler will run the listener function
-    in a **blocking** way, resulting in the heartbeat and other messages being delayed for the amount
-    of the execution.
-    If you think that your message handler will need to run for more than a second then you can register it
-    as **concurrent**. Locust will then make it run in its own greenlet. Note that these greenlets will never 
-    be join():ed.
+    Sử dụng các tùy chọn mặc định khi đăng ký một trình xử lý tin nhắn sẽ chạy hàm nghe trong một cách **chặn**, dẫn đến việc trì hoãn tin nhắn heartbeat và các tin nhắn khác trong thời gian thực thi.
+    Nếu bạn nghĩ rằng trình xử lý tin nhắn của mình sẽ cần chạy trong hơn một giây thì bạn có thể đăng ký nó
+    như **concurrent**. Locust sẽ khiến nó chạy trong greenlet riêng của nó. Lưu ý rằng các greenlet này sẽ không bao giờ được join():ed.
 
     .. code-block::
 
         environment.runner.register_message('test_users', setup_test_users, concurrent=True)
 
-For more details, see the `complete example <https://github.com/locustio/locust/tree/master/examples/custom_messages.py>`_.
+Để biết thêm chi tiết, xem `ví dụ hoàn chỉnh <https://github.com/locustio/locust/tree/master/examples/custom_messages.py>`_.
 
 
-Running distributed with Docker
+Chạy phân tán với Docker (Running distributed with Docker)
 =============================================
 
-See :ref:`running-in-docker`
+Xem :ref:`running-in-docker`
 
 
-Running Locust distributed without the web UI
+Chạy Locust phân tán mà không có giao diện web (Running Locust distributed without the web UI)
 =============================================
 
-See :ref:`running-distributed-without-web-ui`
+Xem :ref:`running-distributed-without-web-ui`
 
 
-Increase Locust's performance
+Tăng hiệu suất của Locust (Increase Locust's performance)
 =============================
 
-If you're planning to run large-scale load tests, you might be interested to use the alternative
-HTTP client that's shipped with Locust. You can read more about it here: :ref:`increase-performance`.
+Nếu bạn đang lên kế hoạch chạy các bài kiểm tra tải lớn, bạn có thể quan tâm đến việc sử dụng máy khách HTTP thay thế được giao với Locust. Bạn có thể đọc thêm về nó ở đây: :ref:`increase-performance`.

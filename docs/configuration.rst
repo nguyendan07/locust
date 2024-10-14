@@ -8,7 +8,7 @@ Configuration
 Command Line Options
 ====================
 
-Locust is configured mainly through command line arguments.
+Locust được cấu hình chủ yếu thông qua các đối số dòng lệnh (command line arguments).
 
 .. code-block:: console
 
@@ -21,41 +21,41 @@ Locust is configured mainly through command line arguments.
 
 .. _environment-variables:
 
-Environment Variables
+Biến môi trường (Environment Variables)
 =====================
 
-Options can also be set through environment variables. They are typically the same as the command line argument
-but capitalized and prefixed with ``LOCUST_``:
+Các tùy chọn cũng có thể được đặt thông qua các biến môi trường. Thông thường chúng giống như đối số dòng lệnh
+nhưng viết hoa và thêm tiền tố ``LOCUST_``:
 
-On Linux/macOS:
+Trên Linux/macOS:
 
-.. code-block::
+.. code-block:: console
 
     $ LOCUST_LOCUSTFILE=custom_locustfile.py locust
 
-On Windows:
+Trên Windows:
 
-.. code-block::
+.. code-block:: console
 
     > set LOCUST_LOCUSTFILE=custom_locustfile.py
     > locust
 
 .. _configuration-file:
 
-Configuration File
+Tệp cấu hình (Configuration File)
 ==================
 
-Options can also be set in a configuration file in the
-`config or TOML file format <https://github.com/bw2/ConfigArgParse#config-file-syntax>`_.
+Tùy chọn cũng có thể được đặt trong một tệp cấu hình trong định dạng
+`config hoặc TOML <https://github.com/bw2/ConfigArgParse#config-file-syntax>`_.
 
-Locust will look for ``~/.locust.conf``, ``./locust.conf`` and ``./pyproject.toml`` by default.
-You can specify an additional file using the ``--config`` flag.
+Locust sẽ tìm kiếm ``~/.locust.conf``, ``./locust.conf`` và ``./pyproject.toml`` theo mặc định.
+Bạn có thể chỉ định một tệp bổ sung bằng cờ ``--config``.
 
 .. code-block:: console
 
     $ locust --config custom_config.conf
 
-Here's a quick example of the configuration files supported by Locust:
+Dưới đây là một ví dụ nhanh về các tệp cấu hình được hỗ trợ bởi Locust:
 
 locust.conf
 --------------
@@ -75,7 +75,7 @@ locust.conf
 pyproject.toml
 --------------
 
-When using a TOML file, configuration options should be defined within the ``[tool.locust]`` section.
+Khi sử dụng tệp TOML, các tùy chọn cấu hình nên được xác định trong phần ``[tool.locust]``.
 
 .. code-block:: toml
 
@@ -92,33 +92,33 @@ When using a TOML file, configuration options should be defined within the ``[to
 
 .. note::
 
-    Configuration values are read (and overridden) in the following order:
+    Các giá trị cấu hình được đọc (và ghi đè) theo thứ tự sau:
     
     .. code-block:: console
         
        ~/.locust.conf -> ./locust.conf -> ./pyproject.toml -> (file specified using --conf) -> env vars -> cmd args
 
 
-All available configuration options
+Tất cả các tùy chọn cấu hình có sẵn
 ===================================
 
-Here's a table of all the available configuration options, and their corresponding Environment and config file keys:
+Dưới đây là một bảng của tất cả các tùy chọn cấu hình có sẵn, và các khóa tương ứng trong môi trường và tệp cấu hình:
 
 .. include:: config-options.rst
 
-Running without the web UI
+Chạy mà không có giao diện web
 ==========================
 
-See :ref:`running-without-web-ui`
+Xem :ref:`running-without-web-ui`
 
-Using multiple Locustfiles at once
+Sử dụng nhiều tệp Locust cùng một lúc
 ==================================
 
-``-f/--locustfile`` accepts multiple, comma-separated locustfiles.
+``-f/--locustfile`` chấp nhận nhiều tệp locust, được phân tách bằng dấu phẩy.
 
-Example:
+Ví dụ:
 
-With the following file structure:
+Với cấu trúc tệp sau:
 
 .. code-block::
 
@@ -133,24 +133,21 @@ With the following file structure:
 
     $ locust -f locustfiles/locustfile1.py,locustfiles/locustfile2.py,locustfiles/more_files/locustfile3.py
 
-Locust will use ``locustfile1.py``, ``locustfile2.py`` & ``more_files/locustfile3.py``
+Locust sẽ sử dụng ``locustfile1.py``, ``locustfile2.py`` và ``more_files/locustfile3.py``
 
-Additionally, ``-f/--locustfile`` accepts directories as an option. Locust will recursively
-search specified directories for ``*.py`` files, ignoring files that start with "_".
+Ngoài ra, ``-f/--locustfile`` chấp nhận thư mục là một tùy chọn. Locust sẽ tìm kiếm đệ quy các thư mục được chỉ định cho các tệp ``*.py``, bỏ qua các tệp bắt đầu bằng "_".
 
-Example:
+Ví dụ:
 
 .. code-block:: console
 
     $ locust -f locustfiles
 
-Locust will use ``locustfile1.py``, ``locustfile2.py`` & ``more_files/locustfile3.py``
+Locust sẽ sử dụng ``locustfile1.py``, ``locustfile2.py`` và ``more_files/locustfile3.py``
 
+Bạn cũng có thể sử dụng ``-f/--locustfile`` cho các URL web. Điều này sẽ tải tệp và sử dụng nó như bất kỳ tệp locust nào.
 
-
-You can also use ``-f/--locustfile`` for web urls. This will download the file and use it as any normal locustfile.
-
-Example:
+Ví dụ:
 
 .. code-block:: console
 
@@ -159,13 +156,13 @@ Example:
 
 .. _class-picker:
 
-Pick User classes, Shapes and tasks from the UI
+Chọn lớp người dùng, hình dạng và nhiệm vụ từ giao diện người dùng
 ===============================================
 
-You can select which Shape class and which User classes to run in the WebUI when running locust with the ``--class-picker`` flag.
-No selection uses all the available User classes.
+Bạn có thể chọn lớp Shape và lớp User nào để chạy trong WebUI khi chạy locust với cờ ``--class-picker``.
+Không có lựa chọn nào sẽ sử dụng tất cả các lớp User có sẵn.
 
-For example, with a file structure like this:
+Ví dụ, với cấu trúc tệp như sau:
 
 .. code-block::
 
@@ -186,14 +183,13 @@ For example, with a file structure like this:
 
     $ locust -f locustfiles --class-picker
 
-The Web UI will display:
+Giao diện người dùng web sẽ hiển thị:
 
 .. image:: images/userclass_picker_example.png
 
-The class picker additionally allows for disabling individual User tasks, changing the weight or fixed count, and configuring the host.
+Công cụ chọn lớp bổ sung cho phép vô hiệu hóa các tác vụ User, thay đổi trọng lượng hoặc số lượng cố định, và cấu hình máy chủ.
 
-It is even possible to add custom attributes that you wish to be configurable for each User. Simply add a ``json`` classmethod
-to your user:
+Thậm chí còn có thể thêm các thuộc tính tùy chỉnh mà bạn muốn được cấu hình cho mỗi User. Đơn giản thêm một phương thức ``json`` vào User của bạn:
 
 .. code-block:: python
 
@@ -209,16 +205,16 @@ to your user:
                 "some_custom_arg": "example"
             }
 
-Configure Users from command line
+Cấu hình Users từ dòng lệnh
 =================================
 
-You can update User class attributes from the command line too, using the ``--config-users`` argument:
+Bạn có thể cập nhật các thuộc tính lớp User từ dòng lệnh, sử dụng đối số ``--config-users``:
 
 .. code-block:: console
 
     $ locust --config-users '{"user_class_name": "Example", "fixed_count": 1, "some_custom_attribute": false}'
 
-To configure multiple users you pass multiple arguments to ``--config-users``, or use a JSON Array. You can also pass a path to a JSON file.
+Để cấu hình nhiều người dùng, bạn truyền nhiều đối số cho ``--config-users``, hoặc sử dụng một Mảng JSON. Bạn cũng có thể truyền đường dẫn đến tệp JSON.
 
 .. code-block:: console
 
@@ -226,62 +222,62 @@ To configure multiple users you pass multiple arguments to ``--config-users``, o
     $ locust --config-users '[{"user_class_name": "Example", "fixed_count": 1}, {"user_class_name": "ExampleTwo", "fixed_count": 2}]'
     $ locust --config-users my_user_config.json
 
-When using this way to configure your users, you can set any attribute.
+Khi sử dụng cách này để cấu hình người dùng của bạn, bạn có thể đặt bất kỳ thuộc tính nào.
 
 .. note::
-    
-    ``--config-users`` is a somewhat experimental feature and the json format may change even between minor Locust revisions.
 
-Custom arguments
+    ``--config-users`` là một tính năng hơi thử nghiệm và định dạng json có thể thay đổi ngay cả giữa các bản Locust nhỏ.
+
+Đối số tùy chỉnh (Custom arguments)
 ================
 
-See :ref:`custom-arguments`
+Xem :ref:`custom-arguments`
 
-Customization of statistics settings
+Tùy chỉnh cài đặt thống kê
 ====================================
 
-Default configuration for Locust statistics is set in constants of stats.py file.
-It can be tuned to specific requirements by overriding these values.
-To do this, import locust.stats module and override required settings:
+Cấu hình mặc định cho thống kê Locust được đặt trong các hằng số của tệp stats.py.
+Nó có thể được điều chỉnh theo yêu cầu cụ thể bằng cách ghi đè các giá trị này.
+Để làm điều này, nhập mô-đun locust.stats và ghi đè các cài đặt cần thiết:
 
 .. code-block:: python
 
     import locust.stats
     locust.stats.CONSOLE_STATS_INTERVAL_SEC = 15
 
-It can be done directly in Locust file or extracted to separate file for common usage by all Locust files.
+Điều này có thể được thực hiện trực tiếp trong tệp Locust hoặc được trích xuất thành tệp riêng cho việc sử dụng chung bởi tất cả các tệp Locust.
 
-The list of statistics parameters that can be modified is:
+Danh sách các tham số thống kê có thể được sửa đổi là:
 
-+-------------------------------------------+--------------------------------------------------------------------------------------+
-| Parameter name                            | Purpose                                                                              |
-+-------------------------------------------+--------------------------------------------------------------------------------------+
-| STATS_NAME_WIDTH                          | Width of column for request name in console output                                   |
-+-------------------------------------------+--------------------------------------------------------------------------------------+
-| STATS_TYPE_WIDTH                          | Width of column for request type in console output                                   |
-+-------------------------------------------+--------------------------------------------------------------------------------------+
-| CSV_STATS_INTERVAL_SEC                    | Interval for how frequently the CSV file is written if this option is configured     |
-+-------------------------------------------+--------------------------------------------------------------------------------------+
-| CONSOLE_STATS_INTERVAL_SEC                | Interval for how frequently results are written to console                           |
-+-------------------------------------------+--------------------------------------------------------------------------------------+
-| CURRENT_RESPONSE_TIME_PERCENTILE_WINDOW   | Window size/resolution - in seconds - when calculating the current response          |
-|                                           | time percentile                                                                      |
-+-------------------------------------------+--------------------------------------------------------------------------------------+
-| PERCENTILES_TO_REPORT                     | List of response time percentiles to be calculated & reported                        |
-+-------------------------------------------+--------------------------------------------------------------------------------------+
-| PERCENTILES_TO_CHART                      | List of response time percentiles in the screen of chart for UI                      |
-+-------------------------------------------+--------------------------------------------------------------------------------------+
-| PERCENTILES_TO_STATISTICS                 | List of response time percentiles in the screen of statistics for UI                 |
-+-------------------------------------------+--------------------------------------------------------------------------------------+
++-------------------------------------------+-------------------------------------------------------------------------------------------------+
+| Parameter name                            | Purpose                                                                                         |
++-------------------------------------------+-------------------------------------------------------------------------------------------------+
+| STATS_NAME_WIDTH                          | Độ rộng của cột cho tên yêu cầu trong đầu ra bảng điều khiển                                    |
++-------------------------------------------+-------------------------------------------------------------------------------------------------+
+| STATS_TYPE_WIDTH                          | Độ rộng của cột cho loại yêu cầu trong đầu ra bảng điều khiển                                   |
++-------------------------------------------+-------------------------------------------------------------------------------------------------+
+| CSV_STATS_INTERVAL_SEC                    | Khoảng thời gian để tệp CSV được ghi thường xuyên như thế nào nếu tùy chọn này được cấu hình    |
++-------------------------------------------+-------------------------------------------------------------------------------------------------+
+| CONSOLE_STATS_INTERVAL_SEC                | Khoảng thời gian để kết quả được ghi vào bảng điều khiển thường xuyên như thế nào               |
++-------------------------------------------+-------------------------------------------------------------------------------------------------+
+| CURRENT_RESPONSE_TIME_PERCENTILE_WINDOW   | Window size/resolution - in seconds - when calculating the current response                     |
+|                                           | time percentile                                                                                 |
++-------------------------------------------+-------------------------------------------------------------------------------------------------+
+| PERCENTILES_TO_REPORT                     | Danh sách các phần trăm thời gian phản hồi được tính toán & báo cáo                             |
++-------------------------------------------+-------------------------------------------------------------------------------------------------+
+| PERCENTILES_TO_CHART                      | Danh sách các phần trăm thời gian phản hồi trong màn hình biểu đồ cho UI                        |
++-------------------------------------------+-------------------------------------------------------------------------------------------------+
+| PERCENTILES_TO_STATISTICS                 | Danh sách các phần trăm thời gian phản hồi trong màn hình thống kê cho UI                       |
++-------------------------------------------+-------------------------------------------------------------------------------------------------+
 
-Customization of additional static variables
+Tùy chỉnh các biến tĩnh bổ sung (Customization of additional static variables)
 ============================================
 
-This table lists the constants that are set within locust and may be overridden.
+Bảng này liệt kê các hằng số được đặt trong locust và có thể bị ghi đè.
 
-+-------------------------------------------+--------------------------------------------------------------------------------------+
-| Parameter name                            | Purpose                                                                              |
-+-------------------------------------------+--------------------------------------------------------------------------------------+
-| locust.runners.WORKER_LOG_REPORT_INTERVAL | Interval for how frequently worker logs are reported to master. Can be disabled      |
-|                                           | by setting to a negative number                                                      |
-+-------------------------------------------+--------------------------------------------------------------------------------------+
++-------------------------------------------+------------------------------------------------------------------------------------------------+
+| Parameter name                            | Purpose                                                                                        |
++-------------------------------------------+------------------------------------------------------------------------------------------------+
+| locust.runners.WORKER_LOG_REPORT_INTERVAL | Khoảng thời gian để nhật ký công nhân được báo cáo cho máy chủ thường xuyên như thế nào.       |
+|                                           | Có thể vô hiệu hóa bằng cách đặt thành một số âm                                               |
++-------------------------------------------+------------------------------------------------------------------------------------------------+

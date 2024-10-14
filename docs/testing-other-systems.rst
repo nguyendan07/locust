@@ -1,64 +1,64 @@
 .. _testing-other-systems:
 
 ===============================
-Testing other systems/protocols
+Kiểm tra các hệ thống/giao thức khác (Testing other systems/protocols)
 ===============================
 
-Locust only comes with built-in support for HTTP/HTTPS but it can be extended to test almost any system. This is normally done by wrapping the protocol library and triggering a :py:attr:`request <locust.event.Events.request>` event after each call has completed, to let Locust know what happened.
+Locust chỉ đi kèm với hỗ trợ tích hợp cho HTTP/HTTPS nhưng nó có thể được mở rộng để kiểm tra hầu hết các hệ thống. Thông thường điều này được thực hiện bằng cách bọc thư viện giao thức và kích hoạt một sự kiện :py:attr:`request <locust.event.Events.request>` sau mỗi cuộc gọi đã hoàn thành, để cho Locust biết điều gì đã xảy ra.
 
 .. note::
 
-    It is important that the protocol libraries you use can be `monkey-patched <https://www.gevent.org/intro.html#monkey-patching>`_ by gevent. 
+    Quan trọng là thư viện giao thức bạn sử dụng có thể được `monkey-patched <https://www.gevent.org/intro.html#monkey-patching>`_ bởi gevent. 
     
-    Almost any libraries that are pure Python (using the Python ``socket`` module or some other standard library function like ``subprocess``) should work fine out of the box - but if they do their I/O calls from compiled code C, gevent will be unable to patch it. This will block the whole Locust/Python process (in practice limiting you to running a single User per worker process).
+    Hầu hết các thư viện là Python thuần (sử dụng mô-đun Python ``socket`` hoặc một hàm thư viện chuẩn khác như ``subprocess``) nên sẽ hoạt động tốt ngay - nhưng nếu chúng thực hiện các cuộc gọi I/O từ mã đã biên dịch C, gevent sẽ không thể patch nó. Điều này sẽ chặn toàn bộ quá trình Locust/Python (thực tế giới hạn bạn chỉ có thể chạy một Người dùng cho mỗi quá trình worker).
 
-    Some C libraries allow for other workarounds. For example, if you want to use psycopg2 to performance test PostgreSQL, you can use `psycogreen <https://github.com/psycopg/psycogreen/>`_. If you are willing to get your hands dirty, you may be able to patch a library yourself, but that is beyond the scope of this documentation.
+    Một số thư viện C cho phép các phương pháp khác để giải quyết vấn đề. Ví dụ, nếu bạn muốn sử dụng psycopg2 để kiểm tra hiệu suất PostgreSQL, bạn có thể sử dụng `psycogreen <https://github.com/psycopg/psycogreen/>`_. Nếu bạn sẵn lòng làm việc, bạn có thể tự patch một thư viện, nhưng đó là ngoài phạm vi của tài liệu này.
 
 XML-RPC
 =======
 
-Lets assume we have an XML-RPC server that we want to load test.
+Giả sử chúng ta có một máy chủ XML-RPC mà chúng ta muốn kiểm tra tải.
 
 .. literalinclude:: ../examples/custom_xmlrpc_client/server.py
 
-We can build a generic XML-RPC client, by wrapping :py:class:`xmlrpc.client.ServerProxy`.
+Chúng ta có thể xây dựng một khách hàng XML-RPC chung, bằng cách bọc :py:class:`xmlrpc.client.ServerProxy`.
 
 .. literalinclude:: ../examples/custom_xmlrpc_client/xmlrpc_locustfile.py
 
 gRPC
 ====
 
-Lets assume we have a `gRPC <https://github.com/grpc/grpc>`_ server that we want to load test:
+Giả sử chúng ta có một máy chủ `gRPC <https://github.com/grpc/grpc>`_ mà chúng ta muốn kiểm tra tải:
 
 .. literalinclude:: ../examples/grpc/hello_server.py
 
-The generic GrpcUser base class sends events to Locust using an `interceptor <https://pypi.org/project/grpc-interceptor/>`_:
+Lớp cơ sở GrpcUser chung gửi sự kiện đến Locust bằng một `interceptor <https://pypi.org/project/grpc-interceptor/>`_:
 
 .. literalinclude:: ../examples/grpc/grpc_user.py
 
-And a locustfile using the above would look like this:
+Và một tệp locust sử dụng ở trên sẽ trông như thế này:
 
 .. literalinclude:: ../examples/grpc/locustfile.py
 
 .. _testing-request-sdks:
 
-requests-based libraries/SDKs
+Các thư viện/SDK dựa trên requests
 =============================
 
-If you want to use a library that uses a `requests.Session <https://requests.readthedocs.io/en/latest/api/#requests.Session>`_ object under the hood you will most likely be able to skip all the above complexity.
+Nếu bạn muốn sử dụng một thư viện sử dụng đối tượng `requests.Session <https://requests.readthedocs.io/en/latest/api/#requests.Session>`_ dưới lớp, bạn có thể bỏ qua tất cả sự phức tạp ở trên.
 
-Some libraries allow you to pass a Session explicitly, like for example the SOAP client provided by `Zeep <https://docs.python-zeep.org/en/master/transport.html#tls-verification>`_. In that case, just pass it your ``HttpUser``'s :py:attr:`client <locust.HttpUser.client>`, and any requests made using the library will be logged in Locust.
+Một số thư viện cho phép bạn truyền một Session một cách rõ ràng, như ví dụ là khách hàng SOAP được cung cấp bởi `Zeep <https://docs.python-zeep.org/en/master/transport.html#tls-verification>`_. Trong trường hợp đó, chỉ cần truyền cho nó :py:attr:`client <locust.HttpUser.client>` của ``HttpUser`` của bạn, và bất kỳ yêu cầu nào được thực hiện bằng thư viện sẽ được ghi nhật ký trong Locust.
 
-Even if your library doesn't expose that in its interface, you may be able to get it working by overwriting some internally used Session. Here's an example of how to do that for the `Archivist <https://github.com/jitsuin-inc/archivist-python>`_ client.
+Ngay cả khi thư viện của bạn không tiết lộ điều đó trong giao diện của nó, bạn có thể làm cho nó hoạt động bằng cách ghi đè một số Session được sử dụng bên trong. Dưới đây là một ví dụ về cách thực hiện điều đó cho khách hàng `Archivist <https://github.com/jitsuin-inc/archivist-python>`_.
 
 .. literalinclude:: ../examples/sdk_session_patching/session_patch_locustfile.py
 
 REST
 ====
 
-See :ref:`FastHttpUser <rest>`
+Xem :ref:`FastHttpUser <rest>`
 
-Other examples
+Ví dụ khác
 ==============
 
-See `locust-plugins <https://github.com/SvenskaSpel/locust-plugins#users>`_ it has users for WebSocket/SocketIO, Kafka, Selenium/WebDriver, Playwright and more.
+Xem `locust-plugins <https://github.com/SvenskaSpel/locust-plugins#users>`_ nó có người dùng cho WebSocket/SocketIO, Kafka, Selenium/WebDriver, Playwright và nhiều hơn nữa.

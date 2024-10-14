@@ -1,10 +1,10 @@
 .. _running-without-web-ui:
 
 =================================
-Running without the web UI
+Chạy mà không có giao diện web (Running without the web UI)
 =================================
 
-You can run locust without the web UI by using the ``--headless`` flag together with ``-u/--users`` and ``-r/--spawn-rate``:
+Bạn có thể chạy Locust mà không cần giao diện web bằng cách sử dụng cờ ``--headless`` cùng với ``-u/--users`` và ``-r/--spawn-rate``:
 
 .. code-block:: console
     :substitutions:
@@ -23,26 +23,26 @@ You can run locust without the web UI by using the ``--headless`` flag together 
     [2021-07-24 10:44:42,484] .../INFO/locust.runners: All users spawned: {"HelloWorldUser": 100} (100 total users)
     (...)
 
-Even in headless mode you can change the user count while the test is running. Press ``w`` to add 1 user or ``W`` to add 10. Press ``s`` to remove 1 or ``S`` to remove 10.
+Ngay cả trong chế độ headless, bạn vẫn có thể thay đổi số lượng người dùng trong khi bài kiểm tra đang chạy. Nhấn ``w`` để thêm 1 người dùng hoặc ``W`` để thêm 10. Nhấn ``s`` để xóa 1 hoặc ``S`` để xóa 10.
 
-Setting a time limit for the test
+Thiết lập thời gian chạy cho bài kiểm tra
 ---------------------------------
 
-To specify the run time for a test, use ``-t/--run-time``:
+Để chỉ định thời gian chạy cho một bài kiểm tra, sử dụng ``-t/--run-time``:
 
 .. code-block:: console
 
     $ locust --headless -u 100 --run-time 1h30m
-    $ locust --headless -u 100 --run-time 60 # default unit is seconds
+    $ locust --headless -u 100 --run-time 60 # đơn vị mặc định là giây
 
-Locust will shut down once the time is up. Time is calculated from the start of the test (not from when ramp up has finished).
+Locust sẽ dừng lại khi hết thời gian. Thời gian được tính từ lúc bắt đầu bài kiểm tra (không phải từ khi hoàn thành việc tăng dần).
 
 
-Allow tasks to finish their iteration on shutdown
+Cho phép các nhiệm vụ hoàn thành vòng lặp của mình khi tắt
 -------------------------------------------------
 
-By default, Locust will stop your tasks immediately (without even waiting for requests to finish). 
-To give running tasks some time to finish their iteration, use ``-s/--stop-timeout``:
+Mặc định, Locust sẽ dừng các nhiệm vụ của bạn ngay lập tức (mà không cần chờ các yêu cầu kết thúc).
+Để cho các nhiệm vụ đang chạy một thời gian để hoàn thành vòng lặp của họ, sử dụng ``-s/--stop-timeout``:
 
 .. code-block:: console
 
@@ -51,29 +51,29 @@ To give running tasks some time to finish their iteration, use ``-s/--stop-timeo
 .. _running-distributed-without-web-ui:
 
 
-Running Locust distributed without the web UI
+Chạy Locust phân tán mà không có giao diện web
 ---------------------------------------------
 
-If you want to :ref:`run Locust distributed <running-distributed>` without the web UI, 
-you should specify the ``--expect-workers`` option when starting the master node, to specify
-the number of worker nodes that are expected to connect. It will then wait until that many worker
-nodes have connected before starting the test.
+Nếu bạn muốn :ref:`chạy Locust phân tán <running-distributed>` mà không có giao diện web,
+bạn nên chỉ định tùy chọn ``--expect-workers`` khi bắt đầu nút master, để chỉ định
+số lượng nút worker được kỳ vọng sẽ kết nối. Sau đó, nó sẽ chờ cho đến khi có đủ nhiều nút worker
+đã kết nối trước khi bắt đầu bài kiểm tra.
 
 
-Controlling the exit code of the Locust process
+Kiểm soát mã thoát của quá trình Locust
 -----------------------------------------------
 
-By default the locust process will give an exit code of 1 if there were any failed samples 
-(use the ``--exit-code-on-error`` to change that behaviour).
+Mặc định quá trình locust sẽ cung cấp mã thoát là 1 nếu có bất kỳ mẫu nào thất bại
+(sử dụng ``--exit-code-on-error`` để thay đổi hành vi đó).
 
-You can also manually control the exit code in your test scripts by setting the :py:attr:`process_exit_code <locust.env.Environment.process_exit_code>` of the 
-:py:class:`Environment <locust.env.Environment>` instance. This is particularly useful when running Locust as an automated/scheduled test, for example as part of a CI pipeline.
+Bạn cũng có thể kiểm soát mã thoát một cách thủ công trong các tập lệnh kiểm tra của bạn bằng cách thiết lập :py:attr:`process_exit_code <locust.env.Environment.process_exit_code>` của
+:py:class:`Environment <locust.env.Environment>` instance. Điều này đặc biệt hữu ích khi chạy Locust như một bài kiểm tra tự động/lên lịch, ví dụ như là một phần của pipeline CI.
 
-Below is an example that'll set the exit code to non zero if any of the following conditions are met:
+Dưới đây là một ví dụ sẽ thiết lập mã thoát thành không phải không nếu bất kỳ điều kiện sau đây được đáp ứng:
 
-* More than 1% of the requests failed
-* The average response time is longer than 200 ms
-* The 95th percentile for response time is larger than 800 ms
+* Hơn 1% các yêu cầu thất bại
+* Thời gian phản hồi trung bình dài hơn 200 ms
+* Phần trăm 95 cho thời gian phản hồi lớn hơn 800 ms
 
 .. code-block:: python
 

@@ -62,11 +62,10 @@ HttpSession class
 Response class
 ==============
 
-This class actually resides in the `requests <https://requests.readthedocs.io/>`_ library, 
-since that's what Locust is using to make HTTP requests, but it's included in the API docs 
-for locust since it's so central when writing locust load tests. You can also look at the 
-:py:class:`Response <requests.Response>` class at the 
-`requests documentation <https://requests.readthedocs.io/>`_.
+Lớp này thực sự nằm trong thư viện `requests <https://requests.readthedocs.io/>`_,
+vì đó là thứ Locust sử dụng để thực hiện các yêu cầu HTTP, nhưng nó được bao gồm trong tài liệu API
+để locust vì nó quan trọng khi viết các bài kiểm tra tải locust. Bạn cũng có thể xem
+lớp :py:class:`Response <requests.Response>` tại `requests documentation <https://requests.readthedocs.io/>`_.
 
 .. autoclass:: requests.Response
     :inherited-members:
@@ -104,11 +103,11 @@ Environment class
 Event hooks
 ===========
 
-Locust provides event hooks that can be used to extend Locust in various ways.
+Locust cung cấp các hooks sự kiện mà có thể được sử dụng để mở rộng Locust theo nhiều cách.
 
-The following event hooks are available under :py:attr:`Environment.events <locust.env.Environment.events>`, 
-and there's also a reference to these events under ``locust.events`` that can be used at the module level 
-of locust scripts (since the Environment instance hasn't been created when the locustfile is imported).
+Các hook sự kiện sau đây có sẵn dưới :py:attr:`Environment.events <locust.env.Environment.events>`,
+và cũng có một tham chiếu đến các sự kiện này dưới ``locust.events`` mà có thể được sử dụng ở mức độ module
+của các tập lệnh locust (vì một Environment instance chưa được tạo khi tập lệnh locust được nhập).
 
 .. autoclass:: locust.event.Events
     :members:
@@ -116,8 +115,8 @@ of locust scripts (since the Environment instance hasn't been created when the l
 
 .. note::
 
-    It's highly recommended that you add a wildcard keyword argument in your event listeners
-    to prevent your code from breaking if new arguments are added in a future version.
+    Nó được khuyến khích rằng bạn thêm một wildcard keyword argument trong các trình nghe sự kiện của bạn
+    để ngăn mã của bạn bị hỏng nếu các đối số mới được thêm trong một phiên bản tương lai.
 
 EventHook class
 ---------------

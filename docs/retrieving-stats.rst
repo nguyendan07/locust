@@ -1,29 +1,29 @@
 ======================================
-Retrieve test statistics in CSV format
+Lấy thống kê thử nghiệm ở định dạng CSV (Retrieve test statistics in CSV format)
 ======================================
 
-You may wish to consume your Locust results via a CSV file. In this case, there are two ways to do this.
+Bạn có thể muốn tiêu thụ kết quả Locust của mình thông qua một tệp CSV. Trong trường hợp này, có hai cách để làm điều này.
 
-First, when running Locust with the web UI, you can retrieve CSV files under the Download Data tab. 
+Đầu tiên, khi chạy Locust với giao diện web, bạn có thể lấy các tệp CSV dưới tab Tải xuống Dữ liệu.
 
-Secondly, you can run Locust with a flag which will periodically save four CSV files. This is particularly useful
-if you plan on running Locust in an automated way with the ``--headless`` flag:
+Thứ hai, bạn có thể chạy Locust với một cờ sẽ định kỳ lưu bốn tệp CSV. Điều này đặc biệt hữu ích
+nếu bạn có kế hoạch chạy Locust theo cách tự động với cờ ``--headless``:
 
 .. code-block:: console
 
     $ locust -f examples/basic.py --csv example --headless -t10m
 
-The files will be named ``example_stats.csv``, ``example_failures.csv``, ``example_exceptions.csv`` and ``example_stats_history.csv``
-(when using ``--csv example``). The first two files will contain the stats and failures for the whole 
-test run, with a row for every stats entry (URL endpoint) and an aggregated row. The ``example_stats_history.csv`` 
-will get new rows with the *current* (10 seconds sliding window) stats appended during the whole test run. 
-By default only the Aggregate row is appended regularly to the history stats, but if Locust is started with 
-the ``--csv-full-history`` flag, a row for each stats entry (and the Aggregate) is appended every time 
-the stats are written (once every 2 seconds by default).
+Các tệp sẽ được đặt tên là ``example_stats.csv``, ``example_failures.csv``, ``example_exceptions.csv`` và ``example_stats_history.csv``
+(khi sử dụng ``--csv example``). Hai tệp đầu tiên sẽ chứa thống kê và thất bại cho toàn bộ
+bài kiểm tra, với một hàng cho mỗi mục thống kê (điểm cuối URL) và một hàng tổng hợp. ``example_stats_history.csv``
+sẽ có các hàng mới với thống kê *hiện tại* (cửa sổ trượt 10 giây) được thêm vào trong suốt
+bài kiểm tra. Mặc định chỉ hàng Tổng hợp được thêm vào định kỳ vào lịch sử thống kê, nhưng nếu Locust được bắt đầu với
+cờ ``--csv-full-history``, một hàng cho mỗi mục thống kê (và Tổng hợp) được thêm vào mỗi lần
+thống kê được viết (mỗi 2 giây mặc định).
 
-You can also customize how frequently this is written:
+Bạn cũng có thể tùy chỉnh cách thường xuyên việc này được viết:
 
 .. code-block:: python
 
     import locust.stats
-    locust.stats.CSV_STATS_INTERVAL_SEC = 5 # default is 1 second
+    locust.stats.CSV_STATS_INTERVAL_SEC = 5 # mặc định là 1 giây

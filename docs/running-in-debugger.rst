@@ -1,17 +1,17 @@
 .. _running-in-debugger:
 
 ===========================
-Running tests in a debugger
+Chạy thử nghiệm trong trình gỡ lỗi (Running tests in a debugger)
 ===========================
 
-Running Locust in a debugger is extremely useful when developing your tests. Among other things, you can examine a particular response or check some User instance variable.
+Chạy Locust trong trình gỡ lỗi rất hữu ích khi phát triển các bài kiểm tra của bạn. Trong số những điều khác, bạn có thể kiểm tra một phản hồi cụ thể hoặc kiểm tra một biến thể của User.
 
-But debuggers sometimes have issues with complex gevent-applications like Locust, and there is a lot going on in the framework itself that you probably aren't interested in. To simplify this, Locust provides a method called :py:func:`run_single_user <locust.debug.run_single_user>`:
+Nhưng trình gỡ lỗi đôi khi gặp vấn đề với các ứng dụng gevent phức tạp như Locust, và có rất nhiều điều đang diễn ra trong framework mà bạn có lẽ không quan tâm. Để đơn giản hóa điều này, Locust cung cấp một phương thức được gọi là :py:func:`run_single_user <locust.debug.run_single_user>`:
 
 .. literalinclude:: ../examples/debugging.py
     :language: python
 
-It implicitly registers an event handler for the :ref:`request <extending_locust>` event to print some stats about every request made:
+Nó ngầm định đăng ký một trình xử lý sự kiện cho sự kiện :ref:`request <extending_locust>` để in một số thống kê về mỗi yêu cầu được thực hiện:
 
 .. code-block:: console
 
@@ -19,39 +19,39 @@ It implicitly registers an event handler for the :ref:`request <extending_locust
     GET     /hello                                         38      ConnectionRefusedError(61, 'Connection refused')
     GET     /hello                                         4       ConnectionRefusedError(61, 'Connection refused')
 
-You can configure exactly what is printed by specifying parameters to :py:func:`run_single_user <locust.debug.run_single_user>`.
+Bạn có thể cấu hình chính xác những gì được in bằng cách chỉ định các tham số cho :py:func:`run_single_user <locust.debug.run_single_user>`.
 
-Make sure you have enabled gevent in your debugger settings. In VS Code's ``launch.json`` it looks like this:
+Hãy chắc chắn rằng bạn đã kích hoạt gevent trong cài đặt trình gỡ lỗi của bạn. Trong ``launch.json`` của VS Code, nó trông như thế này:
 
 .. literalinclude:: ../.vscode/launch.json
     :language: json
 
-If you want to the whole Locust runtime (with ramp up, command line parsing etc), you can do that too:
+Nếu bạn muốn chạy toàn bộ runtime Locust (với ramp up, phân tích dòng lệnh vv), bạn cũng có thể làm điều đó:
 
 .. literalinclude:: ../.vscode/launch_locust.json
     :language: json
 
-There is a similar setting in `PyCharm <https://www.jetbrains.com/help/pycharm/debugger-python.html>`_.
+Cài đặt tương tự cũng có trong `PyCharm <https://www.jetbrains.com/help/pycharm/debugger-python.html>`_.
 
 .. note::
 
-    | VS Code/pydev may give you warnings about:
+    | VS Code/pydev có thể cảnh báo bạn về:
     | ``sys.settrace() should not be used when the debugger is being used``
-    | It can safely be ignored (and if you know how to get rid of it, please let us know)
+    | Nó có thể an toàn bị bỏ qua (và nếu bạn biết cách loại bỏ nó, hãy cho chúng tôi biết)
 
-You can execute run_single_user multiple times, as shown in `debugging_advanced.py <https://github.com/locustio/locust/tree/master/examples/debugging_advanced.py>`_.
+Bạn có thể thực thi run_single_user nhiều lần, như được hiển thị trong `debugging_advanced.py <https://github.com/locustio/locust/tree/master/examples/debugging_advanced.py>`_.
 
 
-Print HTTP communication
+In ra thông tin giao tiếp HTTP (Print HTTP communication)
 ========================
 
-Sometimes it can be hard to understand why an HTTP request fails in Locust when it works from a regular browser/other application. Here's how to examine the communication in detail:
+Đôi khi có thể khó hiểu tại sao một yêu cầu HTTP thất bại trong Locust khi nó hoạt động từ trình duyệt thông thường/ứng dụng khác. Dưới đây là cách xem xét giao tiếp chi tiết:
 
-For ``HttpUser`` (`python-requests <https://python-requests.org>`_):
+Đối với ``HttpUser`` (`python-requests <https://python-requests.org>`_):
 
 .. code-block:: python
 
-    # put this at the top of your locustfile (or just before the request you want to trace)
+    # đặt đoạn mã này ở đầu tệp locustfile của bạn (hoặc ngay trước yêu cầu bạn muốn theo dõi)
     import logging
     from http.client import HTTPConnection
 
@@ -62,7 +62,7 @@ For ``HttpUser`` (`python-requests <https://python-requests.org>`_):
     requests_log.setLevel(logging.DEBUG)
     requests_log.propagate = True
 
-For ``FastHttpUser`` (`geventhttpclient <https://github.com/gwik/geventhttpclient/>`_):
+Đối với ``FastHttpUser`` (`geventhttpclient <https://github.com/gwik/geventhttpclient/>`_):
 
 .. code-block:: python
 
@@ -74,7 +74,7 @@ For ``FastHttpUser`` (`geventhttpclient <https://github.com/gwik/geventhttpclien
         def t(self):
             self.client.get("http://example.com/", debug_stream=sys.stderr)
 
-Example output (for FastHttpUser):
+Ví dụ đầu ra (cho FastHttpUser):
 
 .. code-block:: console
 
@@ -104,4 +104,4 @@ Example output (for FastHttpUser):
     <head>
     ...
 
-These approaches can of course be used when doing a full load test, but you might get a lot of output :)
+Những cách tiếp cận này tất nhiên có thể được sử dụng khi thực hiện một thử nghiệm tải đầy đủ, nhưng bạn có thể nhận được rất nhiều đầu ra :)
